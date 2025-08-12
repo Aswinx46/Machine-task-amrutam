@@ -1,5 +1,6 @@
-import Login from "@/features/auth/pages/LoginPage";
-import Signup from "@/features/auth/pages/SignupPage";
+
+import Login from "@/features/user/auth/pages/LoginPage";
+import Signup from "@/features/user/auth/pages/SignupPage";
 import { Route, Routes } from "react-router-dom";
 
 const UserRoute = () => {
