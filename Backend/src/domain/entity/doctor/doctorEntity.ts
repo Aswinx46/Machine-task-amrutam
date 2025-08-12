@@ -3,6 +3,7 @@ import { UserEntity } from "../user/userEntity";
 import { DoctorQualification } from "../../../framework/constants/doctorQualification";
 import { DoctorSpecialization } from "../../../framework/constants/doctorSpecialization";
 
+
 export interface DoctorEntity extends Omit<UserEntity, 'googleVerified' | "_id"> {
     _id: ObjectId | string
     isDoctor: boolean,
