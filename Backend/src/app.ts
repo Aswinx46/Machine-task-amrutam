@@ -9,6 +9,7 @@ import helmet from "helmet";
 import { ConnectMongo } from './framework/database/dbConnection/dbConnection'
 import { UserRoute } from './framework/routes/user/userRoute'
 import redisService from './framework/services/redisService'
+import { DoctorRoute } from './framework/routes/doctor/doctorRoute'
 
 export class App {
     private app: Express
@@ -42,6 +43,7 @@ export class App {
     }
     private setUserRoute() {
         this.app.use('/api/v1/users', new UserRoute().userRoute)
+        this.app.use('/api/v1/doctors', new DoctorRoute().DoctorRouter)
     }
     private async redisConnect(){
         await redisService.connect()

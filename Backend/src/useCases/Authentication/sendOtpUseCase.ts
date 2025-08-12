@@ -1,21 +1,26 @@
+import { IdoctorRepository } from "../../domain/interface/repositoryInterfaces/doctorRepositoryInterface";
 import { IuserRepository } from "../../domain/interface/repositoryInterfaces/userRepositoryInterface";
 import { IemailService } from "../../domain/interface/serviceInterfaces/emailServiceInterface";
 import { IotpService } from "../../domain/interface/serviceInterfaces/otpServiceInterface";
-import { IsendOtpUseCase } from "../../domain/interface/useCaseInterfaces/Client/userAuthentication/sendOtpUseCaseInterface";
+import { IsendOtpUseCase } from "../../domain/interface/useCaseInterfaces/Authentication/sendOtpUseCaseInterface";
 
 
 export class SendOtpUseCase implements IsendOtpUseCase {
     private otpService: IotpService
     private emailService: IemailService
     private userRepository: IuserRepository
-    constructor(otpService: IotpService, emailService: IemailService, userRepository: IuserRepository) {
+    private doctorRepository: IdoctorRepository
+    constructor(otpService: IotpService, emailService: IemailService, userRepository: IuserRepository, doctorRepository: IdoctorRepository) {
         this.otpService = otpService
         this.emailService = emailService
         this.userRepository = userRepository
+        this.doctorRepository = doctorRepository
     }
     async execute(email: string): Promise<void> {
         const existingUser = await this.userRepository.findByEmail(email)
         if (existingUser) throw new Error("Email Already Exist")
+        const existingDoctor = await this.doctorRepository.findByEmail(email)
+        if (existingDoctor) throw new Error("Email Already Exist")
         const otp = this.otpService.genarateOtp()
         await this.otpService.storeOtp(email, otp)
         await this.emailService.sendEmailOtp(email, otp)

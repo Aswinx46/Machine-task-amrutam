@@ -1,9 +1,9 @@
-import { UserMapper } from "../mappers/user/userMapper";
-import { UserDTO } from "../../domain/entity/user/userDTO";
-import { UserEntity } from "../../domain/entity/user/userEntity";
-import { IuserRepository } from "../../domain/interface/repositoryInterfaces/userRepositoryInterface";
-import { IhashPassword } from "../../domain/interface/serviceInterfaces/hashPasswordInterface";
-import { IsignUpUseCase } from "../../domain/interface/useCaseInterfaces/Client/userAuthentication/signupOtpUseCaseInterface";
+import { UserMapper } from "../../mappers/user/userMapper";
+import { UserDTO } from "../../../domain/entity/user/userDTO";
+import { UserEntity } from "../../../domain/entity/user/userEntity";
+import { IuserRepository } from "../../../domain/interface/repositoryInterfaces/userRepositoryInterface";
+import { IhashPassword } from "../../../domain/interface/serviceInterfaces/hashPasswordInterface";
+import { IsignUpUseCase } from "../../../domain/interface/useCaseInterfaces/Client/userAuthentication/signupOtpUseCaseInterface";
 
 export class SignupUseCase implements IsignUpUseCase {
     constructor(private UserRepository: IuserRepository, private hashpassword: IhashPassword) { }

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { IsendOtpUseCase } from "../../../../domain/interface/useCaseInterfaces/Client/userAuthentication/sendOtpUseCaseInterface";
-import { IsignUpUseCase } from "../../../../domain/interface/useCaseInterfaces/Client/userAuthentication/signupOtpUseCaseInterface";
-import { HttpStatus } from "../../../../framework/constants/httpStatusCode";
-import { signupSchema } from "../../../../framework/validator/user/signupValidator";
+import { IsendOtpUseCase } from "../../../../../domain/interface/useCaseInterfaces/Authentication/sendOtpUseCaseInterface";
+import { IsignUpUseCase } from "../../../../../domain/interface/useCaseInterfaces/Client/userAuthentication/signupOtpUseCaseInterface";
+import { HttpStatus } from "../../../../../framework/constants/httpStatusCode";
+import { signupSchema } from "../../../../../framework/validator/user/signupValidator";
 
 export class SignupController {
     constructor(private sendOtpUseCase: IsendOtpUseCase, private signupUseCase: IsignUpUseCase) { }

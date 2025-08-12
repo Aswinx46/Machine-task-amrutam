@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IrefreshTokenUseCase } from "../../../../domain/interface/useCaseInterfaces/Client/userAuthentication/refreshTokenUseCaseInterface";
+import { IrefreshTokenUseCase } from "../../../../domain/interface/useCaseInterfaces/Authentication/refreshTokenUseCaseInterface";
 import { HttpStatus } from "../../../../framework/constants/httpStatusCode";
 
 export class RefreshTokenController {

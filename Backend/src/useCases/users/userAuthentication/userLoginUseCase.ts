@@ -1,9 +1,9 @@
-import { UserDTO } from "../../domain/entity/user/userDTO";
-import { IuserRepository } from "../../domain/interface/repositoryInterfaces/userRepositoryInterface";
-import { IhashPassword } from "../../domain/interface/serviceInterfaces/hashPasswordInterface";
-import { IjwtServiceInterface } from "../../domain/interface/serviceInterfaces/jwtServiceInterface";
-import { IuserLoginUseCase } from "../../domain/interface/useCaseInterfaces/Client/userAuthentication/loginUserUseCaseInterface";
-import { UserMapper } from "../mappers/user/userMapper";
+import { UserDTO } from "../../../domain/entity/user/userDTO";
+import { IuserRepository } from "../../../domain/interface/repositoryInterfaces/userRepositoryInterface";
+import { IhashPassword } from "../../../domain/interface/serviceInterfaces/hashPasswordInterface";
+import { IjwtServiceInterface } from "../../../domain/interface/serviceInterfaces/jwtServiceInterface";
+import { IuserLoginUseCase } from "../../../domain/interface/useCaseInterfaces/Client/userAuthentication/loginUserUseCaseInterface";
+import { UserMapper } from "../../mappers/user/userMapper";
 
 export class UserLoginUseCase implements IuserLoginUseCase {
     constructor(private userRepository: IuserRepository, private jwtService: IjwtServiceInterface, private hashPassword: IhashPassword) { }

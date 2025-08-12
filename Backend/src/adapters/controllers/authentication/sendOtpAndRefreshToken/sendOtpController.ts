@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IsendOtpUseCase } from "../../../../domain/interface/useCaseInterfaces/Client/userAuthentication/sendOtpUseCaseInterface";
+import { IsendOtpUseCase } from "../../../../domain/interface/useCaseInterfaces/Authentication/sendOtpUseCaseInterface";
 import { HttpStatus } from "../../../../framework/constants/httpStatusCode";
 
 export class SendOtpController {

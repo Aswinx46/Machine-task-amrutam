@@ -4,9 +4,9 @@ import { DoctorQualification } from "../../constants/doctorQualification";
 import { DoctorSpecialization } from "../../constants/doctorSpecialization";
 
 export const doctorSchema = new Schema<DoctorEntity>({
-    consultationFee: {
-        type: Number,
-        required: true
+    documentId: {
+        type: String,
+        required: false
     },
     email: {
         type: String,

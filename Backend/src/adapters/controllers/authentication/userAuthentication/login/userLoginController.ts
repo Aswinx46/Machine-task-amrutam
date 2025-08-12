@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { IuserLoginUseCase } from "../../../../domain/interface/useCaseInterfaces/Client/userAuthentication/loginUserUseCaseInterface";
-import { HttpStatus } from "../../../../framework/constants/httpStatusCode";
+import { IuserLoginUseCase } from "../../../../../domain/interface/useCaseInterfaces/Client/userAuthentication/loginUserUseCaseInterface";
+import { loginSchema } from "../../../../../framework/validator/user/loginValidator";
+import { HttpStatus } from "../../../../../framework/constants/httpStatusCode";
+import { setTokenInCookie } from "../../../../../framework/services/setTokenInCookie";
 
-import { setTokenInCookie } from "../../../../framework/services/setTokenInCookie";
-import { loginSchema } from "../../../../framework/validator/user/loginValidator";
 
 export class UserLoginController {
     constructor(private userLoginUseCase: IuserLoginUseCase) { }

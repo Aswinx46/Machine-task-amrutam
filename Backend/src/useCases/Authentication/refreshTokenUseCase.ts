@@ -1,6 +1,7 @@
-import { IuserRepository } from "../../domain/interface/repositoryInterfaces/userRepositoryInterface";
-import { IjwtServiceInterface } from "../../domain/interface/serviceInterfaces/jwtServiceInterface";
-import { IrefreshTokenUseCase } from "../../domain/interface/useCaseInterfaces/Client/userAuthentication/refreshTokenUseCaseInterface";
+import { IuserRepository } from "../../domain/interface/repositoryInterfaces/userRepositoryInterface"
+import { IjwtServiceInterface } from "../../domain/interface/serviceInterfaces/jwtServiceInterface"
+import { IrefreshTokenUseCase } from "../../domain/interface/useCaseInterfaces/Authentication/refreshTokenUseCaseInterface"
+
 
 export class RefreshTokenUseCase implements IrefreshTokenUseCase {
     constructor(private jwtService: IjwtServiceInterface, private userRepository: IuserRepository) { }
