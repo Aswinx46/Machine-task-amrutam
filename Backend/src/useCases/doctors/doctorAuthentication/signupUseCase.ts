@@ -13,6 +13,7 @@ export class DoctorSignupUseCase implements IdoctorSignupUseCase {
         const hashedPassword = await this._hashPassword.hashPassword(data.password!)
         if (!hashedPassword) throw new Error("Error while hashing password")
         data.isDoctor = true
+        data.password = hashedPassword
         const newDoctor = await this._doctorRepository.createDoctor(data)
         if (!newDoctor) throw new Error("Error while creating doctor")
         return DoctorMapper.toDTO(newDoctor)

@@ -4,7 +4,7 @@ import { persistReducer, persistStore } from 'redux-persist'
 import { combineReducers } from '@reduxjs/toolkit'
 import UserSlice from './slices/userSlice'
 import TokenSlice from './slices/tokenSlice'
-
+import DoctorSlice from './slices/doctorSlice'
 const persistConfig = {
     key: "root",
     storage,
@@ -13,7 +13,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     token: TokenSlice,
-    user: UserSlice
+    user: UserSlice,
+    doctor: DoctorSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

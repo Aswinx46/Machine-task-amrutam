@@ -15,7 +15,7 @@ const DoctorSignup = () => {
     const handleFormSubmit = async (otp: string) => {
         if (!data) return
         doctorSignupMutation.mutate({ data, enteredOtp: otp }, {
-            onSuccess: (data) => {
+            onSuccess: () => {
                 toast("Account Created")
                 // console.log('this is the response after creating the doctor', data)
                 setShowOtpModal(false)
