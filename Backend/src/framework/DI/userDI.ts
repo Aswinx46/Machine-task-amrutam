@@ -1,12 +1,13 @@
-import { UserLoginController } from "../../adapters/controllers/authentication/login/userLoginController";
-import { RefreshTokenController } from "../../adapters/controllers/authentication/refreshToken/refreshTokenController";
-import { SendOtpController } from "../../adapters/controllers/authentication/signup/sendOtpController";
-import { SignupController } from "../../adapters/controllers/authentication/signup/SignupController";
+import { RefreshTokenController } from "../../adapters/controllers/authentication/sendOtpAndRefreshToken/refreshTokenController";
+import { SendOtpController } from "../../adapters/controllers/authentication/sendOtpAndRefreshToken/sendOtpController";
+import { UserLoginController } from "../../adapters/controllers/authentication/userAuthentication/login/userLoginController";
+import { SignupController } from "../../adapters/controllers/authentication/userAuthentication/signup/SignupController";
+import { DoctorRepository } from "../../adapters/repository/doctorRepository/doctorRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
-import { RefreshTokenUseCase } from "../../useCases/userAuthentication/refreshTokenUseCase";
-import { SendOtpUseCase } from "../../useCases/userAuthentication/sendOtpUseCase";
-import { SignupUseCase } from "../../useCases/userAuthentication/signupUserUseCase";
-import { UserLoginUseCase } from "../../useCases/userAuthentication/userLoginUseCase";
+import { RefreshTokenUseCase } from "../../useCases/Authentication/refreshTokenUseCase";
+import { SendOtpUseCase } from "../../useCases/Authentication/sendOtpUseCase";
+import { SignupUseCase } from "../../useCases/users/userAuthentication/signupUserUseCase";
+import { UserLoginUseCase } from "../../useCases/users/userAuthentication/userLoginUseCase";
 import { EmailService } from "../services/emailService";
 import { HashPassword } from "../services/hashPassword";
 import { JwtService } from "../services/jwtService";
@@ -16,7 +17,8 @@ import { OtpService } from "../services/otpService";
 const otpService = new OtpService()
 const emailService = new EmailService()
 const userRepository = new UserRepository()
-const sendOtpUseCase = new SendOtpUseCase(otpService, emailService, userRepository)
+const doctorRepository = new DoctorRepository()
+const sendOtpUseCase = new SendOtpUseCase(otpService, emailService, userRepository,doctorRepository)
 export const injectedSendOtpController = new SendOtpController(sendOtpUseCase)
 
 //-------------------------------------verify otp and create user -------------------------------

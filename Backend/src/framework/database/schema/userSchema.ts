@@ -26,6 +26,11 @@ export const userSchema = new Schema<UserEntity>({
     profileImage: {
         type: String,
         required: false
+    },
+    role:{
+        type:String,
+        enum:['user','admin','doctor'],
+        default:'user'
     }
 
 }, {
