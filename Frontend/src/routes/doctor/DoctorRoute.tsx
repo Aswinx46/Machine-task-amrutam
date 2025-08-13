@@ -1,5 +1,6 @@
 import DoctorLogin from "@/features/doctor/auth/pages/DoctorLogin"
 import DoctorSignup from "@/features/doctor/auth/pages/DoctorSignup"
+import DoctorHome from "@/features/doctor/slot/pages/DoctorHome"
 import { Route, Routes } from "react-router-dom"
 
 const DoctorRoute = () => {
@@ -7,6 +8,7 @@ const DoctorRoute = () => {
         <Routes>
             <Route path="/signUp" element={<DoctorSignup />} />
             <Route path="/login" element={<DoctorLogin />} />
+            <Route path="/home" element={<DoctorHome />} />
         </Routes>
     )
 }
