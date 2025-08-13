@@ -6,6 +6,7 @@ import { useSendOtpDoctor, useSignupDoctor } from '../hooks/doctorAuthentication
 import { toast } from 'sonner';
 import { useState } from 'react';
 import OTPModal from '@/components/OtpModal';
+import { Link } from 'react-router-dom';
 
 const DoctorSignup = () => {
     const [showOtpModal, setShowOtpModal] = useState<boolean>(false)
@@ -153,6 +154,14 @@ const DoctorSignup = () => {
                             transition={{ delay: 0.7, duration: 0.8 }}
                         >
                             Register as a certified Ayurvedic doctor and start helping patients achieve better health through traditional medicine.
+                        </motion.p>
+                        <motion.p
+                            className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.7, duration: 0.8 }}
+                        >
+                            Already have a account ?  <Link className='text-bold text-black' to={'/doctor/login'}>Click Here</Link>
                         </motion.p>
                     </motion.div>
 

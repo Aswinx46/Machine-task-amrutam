@@ -10,4 +10,9 @@ export const doctorSignup = async (data: DoctorSignupFormType, enteredOtp: strin
 export const sendOtpDoctor = async (email: string) => {
     const response = await axios.post('/send-otp', { email })
     return response.data
-} 
+}
+
+export const doctorLogin = async (email: string, password: string) => {
+    const response = await axios.post('/login', { email, password })
+    return response.data
+}
