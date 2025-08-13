@@ -7,9 +7,11 @@ export interface IavailabilityTime {
     bookedBy?: ObjectId | string;
     consultationDuration: number,
     price: string
+    mode: "online" | "in-person"
+    status: "active" | "inactive" | "expired"
 }
 
-export interface AvailabilityEntity {
+export interface SlotEntity {
     _id?: ObjectId | string
     doctorId: ObjectId | string
     date: Date,

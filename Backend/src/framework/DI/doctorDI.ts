@@ -1,10 +1,13 @@
 import { DoctorLoginController } from "../../adapters/controllers/authentication/doctorAuthentication/loginDoctorController";
 import { SignupDoctorController } from "../../adapters/controllers/authentication/doctorAuthentication/signUpDoctorController";
+import { createSlotController } from "../../adapters/controllers/doctor/slot/slotCreationController";
+import { SlotRepository } from "../../adapters/repository/availabilityRepository/slorRepository";
 import { DoctorRepository } from "../../adapters/repository/doctorRepository/doctorRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
 import { SendOtpUseCase } from "../../useCases/Authentication/sendOtpUseCase";
 import { DoctorLoginUseCase } from "../../useCases/doctors/doctorAuthentication/loginDoctorUseCase";
 import { DoctorSignupUseCase } from "../../useCases/doctors/doctorAuthentication/signupUseCase";
+import { CreateSlotUseCase } from "../../useCases/doctors/slotCreations/slotCreationUseCase";
 import { EmailService } from "../services/emailService";
 import { HashPassword } from "../services/hashPassword";
 import { JwtService } from "../services/jwtService";
@@ -24,3 +27,8 @@ export const injectedDoctorSignUpController = new SignupDoctorController(sendOtp
 const jwtService = new JwtService()
 const doctorLoginUseCase = new DoctorLoginUseCase(doctorRepository, hashPassword, jwtService)
 export const injectedDoctorLoginController = new DoctorLoginController(doctorLoginUseCase)
+
+//-------------------------------------------------------slot creation---------------------------
+const slotRepository = new SlotRepository()
+const createSlotUseCase = new CreateSlotUseCase(slotRepository)
+export const injectedCreateSlotController = new createSlotController(createSlotUseCase)

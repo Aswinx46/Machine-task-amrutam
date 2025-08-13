@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedDoctorLoginController, injectedDoctorSignUpController } from "../../DI/doctorDI";
+import { injectedCreateSlotController, injectedDoctorLoginController, injectedDoctorSignUpController } from "../../DI/doctorDI";
 import { injectedSendOtpController } from "../../DI/userDI";
 
 export class DoctorRoute {
@@ -17,6 +17,9 @@ export class DoctorRoute {
         })
         this.DoctorRouter.post('/login', (req: Request, res: Response) => {
             injectedDoctorLoginController.handleLogin(req, res)
+        })
+        this.DoctorRouter.post('/slot', (req: Request, res: Response) => {
+            injectedCreateSlotController.handleCreateSlot(req, res)
         })
     }
 }

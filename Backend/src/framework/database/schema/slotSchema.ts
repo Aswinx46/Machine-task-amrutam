@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
-import { AvailabilityEntity } from "../../../domain/entity/doctor/availabilityEntity";
+import { SlotEntity } from "../../../domain/entity/doctor/slotEntity";
 
-export const availabilitySchema = new Schema<AvailabilityEntity>({
+export const slotSchema = new Schema<SlotEntity>({
     date: {
         type: Date,
         required: true
@@ -17,10 +17,13 @@ export const availabilitySchema = new Schema<AvailabilityEntity>({
         isBooked: { type: Boolean, required: false, default: false },
         bookedBy: { type: Schema.Types.ObjectId, ref: 'user', required: false },
         consultationDuration: { type: Number, required: true },
-        price: { type: Number, required: true }
+        price: { type: Number, required: true },
+        mode: { type: String, enum: ["online", "in-person"], required: true, default: 'online' },
+        status: { type: String, enum: ["active", "inactive", "expired"], required: true, default: 'active' },
     }],
+
 }, {
     timestamps: true
 })
 
-availabilitySchema.index({ timings: 1, doctorId: 1 })
+slotSchema.index({ timings: 1, doctorId: 1 })
