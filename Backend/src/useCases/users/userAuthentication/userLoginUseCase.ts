@@ -15,8 +15,9 @@ export class UserLoginUseCase implements IuserLoginUseCase {
         const accessSecretKey = process.env.ACCESSTOKEN_SECRET_KEY
         const refreshSecretKey = process.env.REFRESHTOKEN_SECRET_KEY
         if (!accessSecretKey || !refreshSecretKey) throw new Error("No token secrets provided")
-        const accessToken = this.jwtService.createAccessToken(accessSecretKey, user._id?.toString()!)
-        const refreshToken = this.jwtService.createRefreshToken(refreshSecretKey, user._id?.toString()!)
+        const accessToken = this.jwtService.createAccessToken(accessSecretKey, user._id?.toString()!, user.role)
+        const refreshToken = this.jwtService.createRefreshToken(refreshSecretKey, user._id?.toString()!, user.role)
+        
         return { user: UserMapper.toDTO(user), accessToken, refreshToken }
     }
 }

@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { X, Loader2 } from "lucide-react"
-import type { OTPModalProps } from "../interfaces/OtpModalInterface"
+import type { OTPModalProps } from "../features/user/auth/interfaces/OtpModalInterface"
 
 
 export default function OTPModal({

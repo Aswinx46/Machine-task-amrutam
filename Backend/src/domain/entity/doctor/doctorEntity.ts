@@ -16,10 +16,10 @@ export interface DoctorEntity extends Omit<UserEntity, 'googleVerified' | "_id">
     isVerified:boolean,
     clinicName:string
     address:string,
-    location: {
-        type: string,
-        coordinates: [number, number]
-    },
+    // location: {
+    //     type: string,
+    //     coordinates: [number, number]
+    // },
     rating?: number,
     reviewsCount?: number,
     languages?: string[]

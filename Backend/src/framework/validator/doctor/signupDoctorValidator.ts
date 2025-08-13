@@ -21,19 +21,11 @@ export const doctorSignupSchemaValidator = z.object({
                     'Password must include uppercase, lowercase, number, and special character',
             }
         ),
-    isDoctor: z.boolean(),
     specialization: z.array(z.nativeEnum(DoctorSpecialization)).min(1, "At least one specialization is required"),
     mode: z.enum(["online", "In-person"]),
     experienceYears: z.number().min(0, "Experience years cannot be negative"),
-    consultationFee: z.number().positive("Consultation fee must be positive"),
     qualification: z.array(z.nativeEnum(DoctorQualification)).min(1, "At least one qualification is required"),
     isVerified: z.boolean().default(false),
-    location: z.object({
-        type: z.literal("Point"),
-        coordinates: z
-            .tuple([z.number(), z.number()])
-            .refine(coords => coords.length === 2, { message: "Coordinates must have exactly 2 values [lng, lat]" })
-    }),
     rating: z.number().min(0).max(5).optional(),
     reviewsCount: z.number().min(0).optional(),
     languages: z.array(z.string()).optional()

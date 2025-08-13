@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import SignupForm from '../component/SignupForm';
 import { useState } from 'react';
 import type { SignupFormValues } from '../interfaces/signupFormInterfaces';
-import OTPModal from '../component/OtpModal';
+import OTPModal from '../../../../components/OtpModal';
 import { useUserSendOtp, useUserSignup } from '../hooks/userAuthenticationHooks';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';

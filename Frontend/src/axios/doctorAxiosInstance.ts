@@ -3,7 +3,7 @@ import { store } from '../reduxstrore/store'
 import { addToken } from '@/reduxstrore/slices/tokenSlice'
 import authAxios from './authAxios'
 const instance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: import.meta.env.VITE_API_DOCTOR_URL,
     withCredentials: true
 })
 

@@ -9,7 +9,8 @@ export class UserMapper {
             name: user.name,
             profileImage: user.profileImage,
             theme: user.theme,
-            _id: user._id
+            _id: user._id,
+            role:user.role
         }
     }
 }

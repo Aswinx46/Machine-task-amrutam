@@ -10,6 +10,7 @@ import { ConnectMongo } from './framework/database/dbConnection/dbConnection'
 import { UserRoute } from './framework/routes/user/userRoute'
 import redisService from './framework/services/redisService'
 import { DoctorRoute } from './framework/routes/doctor/doctorRoute'
+import { AuthRouter } from './framework/routes/auth/authRouter'
 
 export class App {
     private app: Express
@@ -19,7 +20,7 @@ export class App {
         this.app = express()
         this.setUpMiddleware()
         this.setUpSafetyFeature()
-        this.setUserRoute()
+        this.setRoutes()
         this.redisConnect()
     }
     private setUpMiddleware() {
@@ -41,11 +42,12 @@ export class App {
         this.app.use(limiter)
         this.app.use(helmet())
     }
-    private setUserRoute() {
+    private setRoutes() {
         this.app.use('/api/v1/users', new UserRoute().userRoute)
         this.app.use('/api/v1/doctors', new DoctorRoute().DoctorRouter)
+        this.app.use('/api/v1/auth', new AuthRouter().AuthRouter)
     }
-    private async redisConnect(){
+    private async redisConnect() {
         await redisService.connect()
     }
     public async listen() {

@@ -25,18 +25,18 @@ export const doctorSchema = new Schema<DoctorEntity>({
         type: [String],
         required: false
     },
-    location: {
-        type: {
-            type: String,
-            enum: ['Point'],
-            required: true,
-            default: 'Point'
-        },
-        coordinates: {
-            type: [Number],
-            required: true
-        }
-    },
+    // location: {
+    //     type: {
+    //         type: String,
+    //         enum: ['Point'],
+    //         required: false,
+    //         default: 'Point'
+    //     },
+    //     coordinates: {
+    //         type: [Number],
+    //         required: false
+    //     }
+    // },
     mode: {
         type: String,
         enum: ['online', 'In-person'],
@@ -94,6 +94,11 @@ export const doctorSchema = new Schema<DoctorEntity>({
         enum: ['dark', 'light'],
         default: 'light'
     },
+    role:{
+        type:String,
+        enum:['user','admin','doctor'],
+        default:'doctor'
+    }
 },{
     timestamps:true
 })

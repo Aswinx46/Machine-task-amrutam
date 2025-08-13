@@ -1,11 +1,11 @@
 import { DecodedTokenEntity, IjwtServiceInterface } from "../../domain/interface/serviceInterfaces/jwtServiceInterface";
 import jwt from 'jsonwebtoken'
 export class JwtService implements IjwtServiceInterface {
-    createAccessToken(accessSecretKey: string, userId: string): string {
-        return jwt.sign({ userId }, accessSecretKey, { expiresIn: '15m' })
+    createAccessToken(accessSecretKey: string, userId: string, role: string): string {
+        return jwt.sign({ userId, role }, accessSecretKey, { expiresIn: '15m' })
     }
-    createRefreshToken(refreshSecretKey: string, userId: string): string {
-        return jwt.sign({ userId }, refreshSecretKey, { expiresIn: '1d' })
+    createRefreshToken(refreshSecretKey: string, userId: string, role: string): string {
+        return jwt.sign({ userId, role }, refreshSecretKey, { expiresIn: '1d' })
     }
     async verifyAccessToken(accessToken: string, accessSecretKey: string) {
         try {
@@ -14,7 +14,7 @@ export class JwtService implements IjwtServiceInterface {
             return null
         }
     }
-     verifyRefreshToken(refreshToken: string, refreshSecretKey: string): { userId: string; } | null {
+    verifyRefreshToken(refreshToken: string, refreshSecretKey: string): { userId: string; } | null {
         try {
             return jwt.verify(refreshToken, refreshSecretKey) as { userId: string }
         } catch (error) {

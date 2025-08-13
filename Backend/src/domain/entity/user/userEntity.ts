@@ -8,4 +8,5 @@ export interface UserEntity {
     googleVerified: boolean,
     profileImage:string,
     theme: "dark" | "light"
+    role:'user' | 'admin' | 'doctor'
 }

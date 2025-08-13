@@ -10,7 +10,7 @@ export class RefreshTokenUseCase implements IrefreshTokenUseCase {
         if (!payload) throw new Error("Invalid or expired refresh token")
         const user = await this.userRepository.findById(payload.userId)
         if (!user) throw new Error("User no longer exists")
-        const newAccessToken = this.jwtService.createAccessToken(process.env.ACCESSTOKEN_SECRET_KEY as string, payload.userId)
+        const newAccessToken = this.jwtService.createAccessToken(process.env.ACCESSTOKEN_SECRET_KEY as string, payload.userId, user.role)
         return newAccessToken
     }
 }
