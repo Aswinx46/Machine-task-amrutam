@@ -32,6 +32,3 @@ const jwtService = new JwtService()
 const userLoginUseCase = new UserLoginUseCase(userRepository, jwtService, hashPassword)
 export const injectedUserLoginController = new UserLoginController(userLoginUseCase)
 
-//------------------------------------------refreshToken ----------------------------------
-const refreshTokenUseCase = new RefreshTokenUseCase(jwtService, userRepository)
-export const injectedRefreshTokenController = new RefreshTokenController(refreshTokenUseCase)

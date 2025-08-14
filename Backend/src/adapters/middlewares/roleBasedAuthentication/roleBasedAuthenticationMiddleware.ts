@@ -6,10 +6,12 @@ export const roleBasedAuthenticationMiddleware = (role: string) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const user = (req as any).user
         if (!user) {
-            return res.status(HttpStatus.UNAUTHORIZED).json({ error: ERROR_MESSAGES.UNAUTHORIZED })
+            res.status(HttpStatus.UNAUTHORIZED).json({ error: ERROR_MESSAGES.UNAUTHORIZED })
+            return
         }
-        if (user.role !== role){
-            return res.status(HttpStatus.FORBIDDEN).json({error:ERROR_MESSAGES.FORBIDDEN})
+        if (user.role !== role) {
+            res.status(HttpStatus.FORBIDDEN).json({ error: ERROR_MESSAGES.FORBIDDEN })
+            return
         }
         next()
     }

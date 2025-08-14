@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
-import { injectedRefreshTokenController, injectedSendOtpController, injectedSignupController, injectedUserLoginController } from "../../DI/userDI";
+import { injectedSendOtpController, injectedSignupController, injectedUserLoginController } from "../../DI/userDI";
+import { injectedRefreshTokenController } from "../../DI/middlewareAndRefreshTokenDI";
 
 export class UserRoute {
     public userRoute: Router

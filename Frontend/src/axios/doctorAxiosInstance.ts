@@ -45,7 +45,7 @@ instance.interceptors.response.use(
                 }
                 return instance(originalRequest)
             } catch (refreshError) {
-                window.location.href = '/login'
+                window.location.href = '/doctor/login'
                 return Promise.reject({
                     status: error.response.status,
                     message: "Session Expired Please Login Again",

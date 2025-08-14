@@ -9,14 +9,14 @@ export class JwtService implements IjwtServiceInterface {
     }
     async verifyAccessToken(accessToken: string, accessSecretKey: string) {
         try {
-            return jwt.verify(accessToken, accessSecretKey) as { userId: string }
+            return jwt.verify(accessToken, accessSecretKey) as { userId: string, role: string }
         } catch (error) {
             return null
         }
     }
-    verifyRefreshToken(refreshToken: string, refreshSecretKey: string): { userId: string; } | null {
+    verifyRefreshToken(refreshToken: string, refreshSecretKey: string): { userId: string, role: string } | null {
         try {
-            return jwt.verify(refreshToken, refreshSecretKey) as { userId: string }
+            return jwt.verify(refreshToken, refreshSecretKey) as { userId: string, role: string }
         } catch (error) {
             return null
         }

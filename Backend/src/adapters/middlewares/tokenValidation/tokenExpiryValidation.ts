@@ -6,7 +6,7 @@ export const tokenTimeExpiryValidationMiddleware = (jwtService: IjwtServiceInter
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const authHeader = req.headers.authorization
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            res.status(HttpStatus.BAD_REQUEST).json({ message: 'No token provided' });
+            res.status(HttpStatus.UNAUTHORIZED).json({ message: 'No token provided' });
             return
         }
         const token = authHeader.split(' ')[1]
