@@ -1,26 +1,8 @@
 
 
-// export interface IavailabilityTime {
-//     startTime: string,
-//     endTime: string,
-//     isBooked: boolean,
-//     bookedBy?:  string;
-//     consultationDuration: number,
-//     price: string
-//     mode: "online" | "in-person"
-//     status: "active" | "inactive" | "expired"
-// }
-
-// export interface SlotEntity {
-//     _id?:   string
-//     doctorId:  string
-//     date: Date,
-//     timings: IavailabilityTime[]
-// }
-
 export interface IavailabilityTime {
-    startTime: string;
-    endTime: string;
+    startTime: Date;
+    endTime: Date;
     isBooked: boolean;
     bookedBy?: string;
     consultationDuration: number;

@@ -1,16 +1,15 @@
 import type{ DashboardBooking, BookingStatus } from "@/types/appointment/appointment";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Clock, User, Phone, Mail, Video, MapPin, CheckCircle, XCircle } from "lucide-react";
 import { format } from "date-fns";
 
 interface BookingCardProps {
   booking: DashboardBooking;
-  onStatusChange: (bookingId: string, status: BookingStatus) => void;
+
 }
 
-export const BookingCard = ({ booking, onStatusChange }: BookingCardProps) => {
+export const BookingCard = ({ booking }: BookingCardProps) => {
   const getStatusColor = (status: BookingStatus) => {
     switch (status) {
       case "booked":
@@ -90,7 +89,7 @@ export const BookingCard = ({ booking, onStatusChange }: BookingCardProps) => {
         </div>
       )}
 
-      {booking.status === "booked" && (
+      {/* {booking.status === "booked" && (
         <div className="flex space-x-2 pt-4 border-t">
           <Button
             size="sm"
@@ -110,7 +109,7 @@ export const BookingCard = ({ booking, onStatusChange }: BookingCardProps) => {
             Cancel
           </Button>
         </div>
-      )}
+      )} */}
     </Card>
   );
 };

@@ -1,8 +1,8 @@
 import { ObjectId } from "mongoose";
 
 export interface IavailabilityTime {
-    startTime: string,
-    endTime: string,
+    startTime: Date,
+    endTime: Date,
     isBooked: boolean,
     bookedBy?: ObjectId | string;
     consultationDuration: number,

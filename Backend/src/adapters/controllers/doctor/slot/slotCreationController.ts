@@ -11,7 +11,8 @@ export class createSlotController {
             const { data } = req.body
             const validateData = slotCreationSchema.safeParse(data)
             if (!validateData.success) {
-                res.status(HttpStatus.BAD_REQUEST).json({ message: "Invalid input data", error: validateData.error.flatten().fieldErrors })
+                const allMessages = Object.values(validateData.error.flatten().fieldErrors).flat();
+                res.status(HttpStatus.BAD_REQUEST).json({ message: "Invalid input data", error: allMessages.toString() })
                 return
             }
             const createdSlot = await this._createSlotUseCase.createSlot(data)

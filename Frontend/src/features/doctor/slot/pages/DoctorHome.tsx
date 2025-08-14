@@ -1,11 +1,15 @@
 import { useState } from "react";
 
-import type { DashboardBooking, BookingStatus, FilterStatus, SlotEntity } from "@/types/appointment/appointment";
+import type { DashboardBooking, FilterStatus, SlotEntity } from "@/types/appointment/appointment";
 import { DoctorHeader } from "../component/DoctorHeader";
 import { BookingFilters } from "../component/BookingFilters";
 import { BookingCard } from "../component/BookingCard";
 import { CreateSlotModal } from "../component/CreateSlotModal";
 import { toast } from "sonner";
+import { useCreateSlot } from "../hooks/slotHook";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/reduxstrore/store";
+import { checkDateConflict } from "../utils/checkDateConflict";
 
 // Mock data - replace with actual API calls
 const mockBookings: DashboardBooking[] = [
@@ -56,11 +60,9 @@ const DoctorHomePage = () => {
     const [bookings, setBookings] = useState(mockBookings);
     const [activeFilter, setActiveFilter] = useState<FilterStatus>("all");
     const [isCreateSlotModalOpen, setIsCreateSlotModalOpen] = useState(false);
-
-
-    const filteredBookings = bookings.filter(booking =>
-        activeFilter === "all" || booking.status === activeFilter
-    );
+    const createSlotMutation = useCreateSlot()
+    const doctorId = useSelector((state: RootState) => state.doctor.doctor?._id)
+    if (!doctorId) return
 
     const counts = {
         all: bookings.length,
@@ -75,29 +77,26 @@ const DoctorHomePage = () => {
         completedToday: counts.completed,
     };
 
-    const handleStatusChange = (bookingId: string, newStatus: BookingStatus) => {
-        setBookings(prev =>
-            prev.map(booking =>
-                booking._id === bookingId
-                    ? { ...booking, status: newStatus }
-                    : booking
-            )
-        );
 
-        // toast({
-        //   title: "Booking Updated",
-        //   description: `Booking status changed to ${newStatus}`,
-        // });
-    };
 
     const handleCreateSlot = (slot: Omit<SlotEntity, "_id">) => {
-        // In a real app, this would make an API call
-        console.log("Creating slot:", slot);
+        slot.doctorId = doctorId
+        if (checkDateConflict(slot)) {
+            toast("Date Conflict Found")
+            return
+        }
+        createSlotMutation.mutate(slot, {
+            onSuccess: (data) => {
+                // setBookings((prev)=>[...prev,data.createdSlot])
+                console.log('this is the data after creating the slot', data)
+                toast('Slot Created')
+            },
+            onError: (err) => {
+                console.log('error while creating the slot', err)
+                toast(err.message)
+            }
+        })
 
-        // toast({
-        //   title: "Slots Created",
-        //   description: `Successfully created ${slot.timings.length} time slots for ${slot.date.toDateString()}`,
-        // });
     };
 
     return (
@@ -119,12 +118,11 @@ const DoctorHomePage = () => {
                 </div>
 
                 <div className="grid gap-4">
-                    {filteredBookings.length > 0 ? (
-                        filteredBookings.map((booking) => (
+                    {bookings.length > 0 ? (
+                        bookings.map((booking) => (
                             <BookingCard
                                 key={booking._id}
                                 booking={booking}
-                                onStatusChange={handleStatusChange}
                             />
                         ))
                     ) : (

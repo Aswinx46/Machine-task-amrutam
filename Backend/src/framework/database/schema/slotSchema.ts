@@ -12,8 +12,8 @@ export const slotSchema = new Schema<SlotEntity>({
         required: true
     },
     timings: [{
-        startTime: { type: String, required: true },
-        endTime: { type: String, required: true },
+        startTime: { type: Date, required: true },
+        endTime: { type: Date, required: true },
         isBooked: { type: Boolean, required: false, default: false },
         bookedBy: { type: Schema.Types.ObjectId, ref: 'user', required: false },
         consultationDuration: { type: Number, required: true },
