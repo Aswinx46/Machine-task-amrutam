@@ -1,9 +1,16 @@
 import type { SlotEntity } from "@/types/appointment/appointment"
-import { useMutation } from "@tanstack/react-query"
-import { createSlot } from "../services/slotService"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { createSlot, findSlotsOfADoctor } from "../services/slotService"
 
 export const useCreateSlot = () => {
     return useMutation({
         mutationFn: (data: SlotEntity) => createSlot(data)
+    })
+}
+
+export const useFindSlotsOfDoctor = (page: number) => {
+    return useQuery({
+        queryKey: ['slots', page],
+        queryFn: () => findSlotsOfADoctor(page)
     })
 }
