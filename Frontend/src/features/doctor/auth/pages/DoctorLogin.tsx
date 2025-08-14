@@ -19,7 +19,8 @@ const DoctorLogin = () => {
         toast(`Welcome Back ${data.doctor.name}`)
         dispatch(addDoctor(data.doctor))
         dispatch(addToken(data.accessToken))
-        navigate('/doctor/home')
+        localStorage.setItem('role', data.doctor.role)
+        navigate('/doctor/home', { replace: true })
       },
       onError: (err) => {
         console.log('error while handling the login of the doctor', err)

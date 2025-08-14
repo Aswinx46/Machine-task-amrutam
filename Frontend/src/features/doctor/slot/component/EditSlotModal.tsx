@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { X, Clock, DollarSign, Calendar, Monitor } from 'lucide-react';
 import type { IavailabilityTime, SlotFormValues } from '@/types/appointment/appointment';
+import { Button } from '@/components/ui/button';
 
 interface SlotEditModalProps {
     isOpen: boolean;
@@ -115,7 +116,7 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                                 animate={{ x: 0, opacity: 1 }}
                                                 transition={{ delay: 0.1 }}
                                             >
-                                                <label className="block text-sm font-medium text-card-foreground mb-2 flex items-center gap-2">
+                                                <label className="text-sm font-medium text-card-foreground mb-2 flex items-center gap-2">
                                                     <Clock className="w-4 h-4 text-primary" />
                                                     Start Time
                                                 </label>
@@ -123,8 +124,8 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                                     name="startTime"
                                                     type="time"
                                                     className={`medical-input w-full ${errors.startTime && touched.startTime
-                                                            ? 'border-destructive focus:ring-destructive'
-                                                            : ''
+                                                        ? 'border-destructive focus:ring-destructive'
+                                                        : ''
                                                         }`}
                                                 />
                                                 <ErrorMessage
@@ -139,7 +140,7 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                                 animate={{ x: 0, opacity: 1 }}
                                                 transition={{ delay: 0.2 }}
                                             >
-                                                <label className="block text-sm font-medium text-card-foreground mb-2 flex items-center gap-2">
+                                                <label className="text-sm font-medium text-card-foreground mb-2 flex items-center gap-2">
                                                     <Clock className="w-4 h-4 text-primary" />
                                                     End Time
                                                 </label>
@@ -147,8 +148,8 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                                     name="endTime"
                                                     type="time"
                                                     className={`medical-input w-full ${errors.endTime && touched.endTime
-                                                            ? 'border-destructive focus:ring-destructive'
-                                                            : ''
+                                                        ? 'border-destructive focus:ring-destructive'
+                                                        : ''
                                                         }`}
                                                 />
                                                 <ErrorMessage
@@ -164,7 +165,7 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                             animate={{ y: 0, opacity: 1 }}
                                             transition={{ delay: 0.3 }}
                                         >
-                                            <label className="block text-sm font-medium text-card-foreground mb-2 flex items-center gap-2">
+                                            <label className="text-sm font-medium text-card-foreground mb-2 flex items-center gap-2">
                                                 <DollarSign className="w-4 h-4 text-primary" />
                                                 Price
                                             </label>
@@ -173,9 +174,9 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                                 type="number"
                                                 step="0.01"
                                                 min="0"
-                                                className={`medical-input w-full ${errors.price && touched.price
-                                                        ? 'border-destructive focus:ring-destructive'
-                                                        : ''
+                                                className={`border-4 rounded-2xl border-gray-300 medical-input w-full ${errors.price && touched.price
+                                                    ? 'border-destructive focus:ring-destructive'
+                                                    : ''
                                                     }`}
                                             />
                                             <ErrorMessage
@@ -190,7 +191,7 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                             animate={{ y: 0, opacity: 1 }}
                                             transition={{ delay: 0.4 }}
                                         >
-                                            <label className="block text-sm font-medium text-card-foreground mb-2 flex items-center gap-2">
+                                            <label className="text-sm font-medium text-card-foreground mb-2 flex items-center gap-2">
                                                 <Clock className="w-4 h-4 text-primary" />
                                                 Duration (minutes)
                                             </label>
@@ -198,9 +199,9 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                                 name="consultationDuration"
                                                 type="number"
                                                 min="1"
-                                                className={`medical-input w-full ${errors.consultationDuration && touched.consultationDuration
-                                                        ? 'border-destructive focus:ring-destructive'
-                                                        : ''
+                                                className={`border-4 rounded-2xl border-gray-300 medical-input w-full ${errors.consultationDuration && touched.consultationDuration
+                                                    ? 'border-destructive focus:ring-destructive'
+                                                    : ''
                                                     }`}
                                             />
                                             <ErrorMessage
@@ -215,14 +216,14 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                             animate={{ y: 0, opacity: 1 }}
                                             transition={{ delay: 0.5 }}
                                         >
-                                            <label className="block text-sm font-medium text-card-foreground mb-2 flex items-center gap-2">
+                                            <label className="text-sm font-medium text-card-foreground mb-2 flex items-center gap-2">
                                                 <Monitor className="w-4 h-4 text-primary" />
                                                 Mode
                                             </label>
                                             <Field
                                                 as="select"
                                                 name="mode"
-                                                className="medical-input w-full"
+                                                className="medical-input w-full border-4 rounded-2xl border-gray-300"
                                             >
                                                 <option value="online">
                                                     🌐 Online
@@ -244,7 +245,7 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                             <Field
                                                 as="select"
                                                 name="status"
-                                                className="medical-input w-full"
+                                                className="medical-input w-full border-4 rounded-2xl border-gray-300"
                                             >
                                                 <option value="active">✅ Active</option>
                                                 <option value="inactive">⏸️ Inactive</option>
@@ -258,21 +259,21 @@ export const SlotEditModal: React.FC<SlotEditModalProps> = ({
                                             transition={{ delay: 0.7 }}
                                             className="flex gap-3 pt-4"
                                         >
-                                            <button
+                                            <Button
                                                 type="button"
                                                 onClick={onClose}
                                                 className="medical-button-outline flex-1"
                                                 disabled={isSubmitting}
                                             >
                                                 Cancel
-                                            </button>
-                                            <button
+                                            </Button>
+                                            <Button
                                                 type="submit"
                                                 className="medical-button-primary flex-1"
                                                 disabled={isSubmitting}
                                             >
                                                 {isSubmitting ? 'Saving...' : 'Save Changes'}
-                                            </button>
+                                            </Button>
                                         </motion.div>
                                     </Form>
                                 )}

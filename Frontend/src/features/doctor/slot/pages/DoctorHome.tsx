@@ -10,6 +10,8 @@ import { useCreateSlot } from "../hooks/slotHook";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/reduxstrore/store";
 import { checkDateConflict } from "../utils/checkDateConflict";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 // Mock data - replace with actual API calls
 const mockBookings: DashboardBooking[] = [
@@ -62,8 +64,8 @@ const DoctorHomePage = () => {
     const [isCreateSlotModalOpen, setIsCreateSlotModalOpen] = useState(false);
     const createSlotMutation = useCreateSlot()
     const doctorId = useSelector((state: RootState) => state.doctor.doctor?._id)
+    const navigate = useNavigate()
     if (!doctorId) return
-
     const counts = {
         all: bookings.length,
         booked: bookings.filter(b => b.status === "booked").length,
@@ -108,13 +110,14 @@ const DoctorHomePage = () => {
                     stats={stats}
                 />
 
-                <div className="mb-6">
+                <div className="mb-6 flex justify-between">
                     <h2 className="text-2xl font-bold mb-4">Appointments</h2>
                     <BookingFilters
                         activeFilter={activeFilter}
                         onFilterChange={setActiveFilter}
                         counts={counts}
                     />
+                    <Button onClick={() => navigate('/doctor/slot')}>Show Slots</Button>
                 </div>
 
                 <div className="grid gap-4">
