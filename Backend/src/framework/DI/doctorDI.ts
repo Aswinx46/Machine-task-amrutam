@@ -1,5 +1,6 @@
 import { DoctorLoginController } from "../../adapters/controllers/authentication/doctorAuthentication/loginDoctorController";
 import { SignupDoctorController } from "../../adapters/controllers/authentication/doctorAuthentication/signUpDoctorController";
+import { FindSlotsOfADoctorController } from "../../adapters/controllers/doctor/slot/findSlotsOfADoctorController";
 import { createSlotController } from "../../adapters/controllers/doctor/slot/slotCreationController";
 import { SlotRepository } from "../../adapters/repository/availabilityRepository/slorRepository";
 import { DoctorRepository } from "../../adapters/repository/doctorRepository/doctorRepository";
@@ -7,7 +8,8 @@ import { UserRepository } from "../../adapters/repository/userRepository/userRep
 import { SendOtpUseCase } from "../../useCases/Authentication/sendOtpUseCase";
 import { DoctorLoginUseCase } from "../../useCases/doctors/doctorAuthentication/loginDoctorUseCase";
 import { DoctorSignupUseCase } from "../../useCases/doctors/doctorAuthentication/signupUseCase";
-import { CreateSlotUseCase } from "../../useCases/doctors/slotCreations/slotCreationUseCase";
+import { FindSlotsOfADoctorUseCase } from "../../useCases/doctors/slot/findSlotsOfADoctorUseCase";
+import { CreateSlotUseCase } from "../../useCases/doctors/slot/slotCreationUseCase";
 import { EmailService } from "../services/emailService";
 import { HashPassword } from "../services/hashPassword";
 import { JwtService } from "../services/jwtService";
@@ -32,3 +34,7 @@ export const injectedDoctorLoginController = new DoctorLoginController(doctorLog
 const slotRepository = new SlotRepository()
 const createSlotUseCase = new CreateSlotUseCase(slotRepository)
 export const injectedCreateSlotController = new createSlotController(createSlotUseCase)
+
+//--------------------------------------------------Doctor slots fetching--------------------------
+const findSlotsOfADoctorUseCase = new FindSlotsOfADoctorUseCase(slotRepository)
+export const injectedFindSlotsOfADoctor = new FindSlotsOfADoctorController(findSlotsOfADoctorUseCase)

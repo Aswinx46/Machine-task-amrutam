@@ -17,4 +17,13 @@ export class SlotRepository implements IslotRepository {
             }
         })
     }
+    async findSlotsOfADoctor(doctorId: string, page: number, limit: number): Promise<{ slots: SlotEntity[]; totalPages: number; }> {
+        const skip = (page - 1) * limit
+        const [slots, totalCount] = await Promise.all([
+            slotModel.find({ doctorId }).skip(skip).limit(limit),
+            slotModel.countDocuments({ doctorId })
+        ])
+        const totalPages = Math.ceil(totalCount / limit)
+        return { slots, totalPages }
+    }
 }

@@ -1,6 +1,9 @@
 import { Request, Response, Router } from "express";
-import { injectedCreateSlotController, injectedDoctorLoginController, injectedDoctorSignUpController } from "../../DI/doctorDI";
+import { injectedCreateSlotController, injectedDoctorLoginController, injectedDoctorSignUpController, injectedFindSlotsOfADoctor } from "../../DI/doctorDI";
 import { injectedSendOtpController } from "../../DI/userDI";
+import { tokenTimeExpiryValidationMiddleware } from "../../../adapters/middlewares/tokenValidation/tokenExpiryValidation";
+import { tokenBlackListCheckingMiddleware } from "../../../adapters/middlewares/tokenValidation/tokenBlackListingValidation";
+import { roleBasedAuthenticationMiddleware } from "../../../adapters/middlewares/roleBasedAuthentication/roleBasedAuthenticationMiddleware";
 
 export class DoctorRoute {
     public DoctorRouter: Router
@@ -18,8 +21,10 @@ export class DoctorRoute {
         this.DoctorRouter.post('/login', (req: Request, res: Response) => {
             injectedDoctorLoginController.handleLogin(req, res)
         })
-        this.DoctorRouter.post('/slot', (req: Request, res: Response) => {
+        this.DoctorRouter.route('/slot').post(tokenTimeExpiryValidationMiddleware, tokenBlackListCheckingMiddleware, roleBasedAuthenticationMiddleware('doctor'), (req: Request, res: Response) => {
             injectedCreateSlotController.handleCreateSlot(req, res)
+        }).get(tokenTimeExpiryValidationMiddleware, tokenBlackListCheckingMiddleware, roleBasedAuthenticationMiddleware('doctor'), (req: Request, res: Response) => {
+            injectedFindSlotsOfADoctor.execute(req, res)
         })
     }
 }
