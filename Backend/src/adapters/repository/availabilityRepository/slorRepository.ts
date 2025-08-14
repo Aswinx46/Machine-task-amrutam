@@ -1,4 +1,4 @@
-import { SlotEntity } from "../../../domain/entity/doctor/slotEntity";
+import { SlotEntity, SlotPopulatedEntity } from "../../../domain/entity/doctor/slotEntity";
 import { IslotRepository } from "../../../domain/interface/repositoryInterfaces/slotRepositoryInterface";
 import { slotModel } from "../../../framework/database/models/slotModel";
 export class SlotRepository implements IslotRepository {
@@ -26,4 +26,74 @@ export class SlotRepository implements IslotRepository {
         const totalPages = Math.ceil(totalCount / limit)
         return { slots, totalPages }
     }
+    async findSlots(page: number, limit: number, searchQuery?: string, filter?: string, mode?: string): Promise<{ slots: SlotPopulatedEntity[]; totalPages: number; }> {
+        const skip = (page - 1) * limit
+        const searchFilter: any = {
+            "timings.isBooked": false,
+            "timings.status": "active",
+            "timings.startTime": { $gte: new Date() },
+            date: { $gte: new Date() }
+        }
+        if (mode) searchFilter['timings.mode'] = mode
+
+        if (searchQuery) {
+            searchFilter.$or = [
+                { "doctor.name": { $regex: searchQuery, $options: 'i' } },
+                { "doctor.specification": { $regex: searchQuery, $options: "i" } }
+            ]
+        }
+        const slots = await slotModel.aggregate([
+
+            {
+                $lookup: {
+                    from: "doctors",
+                    let: { doctorId: "$doctorId" },
+                    pipeline: [
+                        { $match: { $expr: { $eq: ["$_id", "$$doctorId"] } } },
+                        { $project: { name: 1, specification: 1 } }
+                    ],
+                    as: "doctor"
+                }
+            },
+            {
+                $unwind: "$doctor",
+            },
+            {
+                $match: searchFilter
+            },
+            {
+                $sort: { date: 1 },
+
+            },
+            {
+                $skip: skip,
+            }, {
+
+                $limit: limit
+            },
+        ])
+        const totalCount = await slotModel.aggregate([
+            { $match: searchFilter },
+            {
+                $lookup: {
+                    from: "doctors",
+                    let: { doctorId: "$doctorId" },
+                    pipeline: [
+                        { $match: { $expr: { $eq: ["$_id", "$$doctorId"] } } }
+                    ],
+                    as: "doctor"
+                }
+            },
+            { $unwind: "$doctor" },
+            { $count: "total" }
+        ]);
+
+        const totalPages = Math.ceil((totalCount[0]?.total || 0) / limit)
+
+        return { slots, totalPages }
+    }
 }
+
+
+
+

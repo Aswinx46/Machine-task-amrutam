@@ -17,3 +17,12 @@ export interface SlotEntity {
     date: Date,
     timings: IavailabilityTime[]
 }
+
+
+export interface SlotPopulatedEntity extends Omit<SlotEntity, "doctorId"> {
+    doctorId: {
+        _id: string | ObjectId,
+        name: string,
+        specification: string
+    }
+}

@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedSendOtpController, injectedSignupController, injectedUserLoginController } from "../../DI/userDI";
+import { injectedFindSlotsController, injectedSendOtpController, injectedSignupController, injectedUserLoginController } from "../../DI/userDI";
 import { injectedRefreshTokenController } from "../../DI/middlewareAndRefreshTokenDI";
 
 export class UserRoute {
@@ -20,6 +20,9 @@ export class UserRoute {
         })
         this.userRoute.post('/refreshToken', (req: Request, res: Response) => {
             injectedRefreshTokenController.handleRefreshToken(req, res)
+        })
+        this.userRoute.get('/slots', (req: Request, res: Response) => {
+            injectedFindSlotsController.handleFindSlots(req, res)
         })
     }
 }

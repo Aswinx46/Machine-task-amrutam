@@ -63,9 +63,9 @@ const DoctorHomePage = () => {
     const [activeFilter, setActiveFilter] = useState<FilterStatus>("all");
     const [isCreateSlotModalOpen, setIsCreateSlotModalOpen] = useState(false);
     const createSlotMutation = useCreateSlot()
-    const doctorId = useSelector((state: RootState) => state.doctor.doctor?._id)
+    const doctor = useSelector((state: RootState) => state.doctor.doctor)
     const navigate = useNavigate()
-    if (!doctorId) return
+    if (!doctor) return
     const counts = {
         all: bookings.length,
         booked: bookings.filter(b => b.status === "booked").length,
@@ -82,7 +82,7 @@ const DoctorHomePage = () => {
 
 
     const handleCreateSlot = (slot: Omit<SlotEntity, "_id">) => {
-        slot.doctorId = doctorId
+        slot.doctorId = doctor?._id
         if (checkDateConflict(slot)) {
             toast("Date Conflict Found")
             return
@@ -105,7 +105,7 @@ const DoctorHomePage = () => {
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-6">
                 <DoctorHeader
-                    doctorName="Emily Carter"
+                    doctorName={doctor.name}
                     onCreateSlot={() => setIsCreateSlotModalOpen(true)}
                     stats={stats}
                 />
