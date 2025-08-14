@@ -11,6 +11,27 @@ export interface IavailabilityTime {
     status: "active" | "inactive" | "expired";
 }
 
+
+export interface SlotFormValues {
+    startTime: string;
+    endTime: string;
+    consultationDuration: string;
+    price: string;
+    mode: "online" | "in-person";
+    status: "active" | "inactive" | "expired";
+  }
+
+export interface IbookedSlotDetails extends Omit<IavailabilityTime,'bookedBy'>{
+    bookedBy:BookedUserDetails
+}
+
+export interface BookedUserDetails {
+    name: string,
+    profileImage: string,
+    email: string,
+    phone: string
+}
+
 export interface SlotEntity {
     _id?: string;
     doctorId: string;
