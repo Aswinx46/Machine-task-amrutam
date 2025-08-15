@@ -26,21 +26,36 @@ export class SlotRepository implements IslotRepository {
         const totalPages = Math.ceil(totalCount / limit)
         return { slots, totalPages }
     }
-    async findSlots(page: number, limit: number, searchQuery?: string, filter?: string, mode?: string): Promise<{ slots: SlotPopulatedEntity[]; totalPages: number; }> {
+    async findSlots(page: number, limit: number, searchQuery?: string, filter?: string, mode?: string, minPrice?: number, maxPrice?: number, duration?: number): Promise<{ slots: SlotPopulatedEntity[]; totalPages: number; }> {
         const skip = (page - 1) * limit
         const searchFilter: any = {
-            "timings.isBooked": false,
-            "timings.status": "active",
-            "timings.startTime": { $gte: new Date() },
+            timings: {
+                $elemMatch: {
+                    isBooked: false,
+                    status: "active",
+                    // startTime: { $gte: new Date() }
+                }
+            },
             date: { $gte: new Date() }
+        };
+        if (mode) {
+            searchFilter.timings.$elemMatch.mode = mode;
         }
-        if (mode) searchFilter['timings.mode'] = mode
-
+        if (minPrice || maxPrice) {
+            console.log('inside minprice and maxprice')
+            searchFilter.timings.$elemMatch.price = {};
+            if (minPrice) searchFilter.timings.$elemMatch.price.$gte = Number(minPrice)
+            if (maxPrice) searchFilter.timings.$elemMatch.price.$gte = Number(maxPrice)
+        }
         if (searchQuery) {
             searchFilter.$or = [
                 { "doctor.name": { $regex: searchQuery, $options: 'i' } },
-                { "doctor.specification": { $regex: searchQuery, $options: "i" } }
+                { "doctor.specialization": { $regex: searchQuery, $options: "i" } }
             ]
+        }
+        if (duration) {
+            console.log('inside the duration statement')
+            searchFilter.timings.$elemMatch.consultationDuration = Number(duration)
         }
         const slots = await slotModel.aggregate([
 
@@ -50,7 +65,7 @@ export class SlotRepository implements IslotRepository {
                     let: { doctorId: "$doctorId" },
                     pipeline: [
                         { $match: { $expr: { $eq: ["$_id", "$$doctorId"] } } },
-                        { $project: { name: 1, specification: 1 } }
+                        { $project: { name: 1, specialization: 1 } }
                     ],
                     as: "doctor"
                 }
