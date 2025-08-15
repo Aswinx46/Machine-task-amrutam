@@ -9,4 +9,8 @@ export interface BookingEntity {
     endTime: string;
     status: "available" | "booked" | "expired"
     recurring: boolean
+    slotId: ObjectId | string
+    userId: ObjectId | string
+    timingId: ObjectId | string
 }
+

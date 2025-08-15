@@ -8,7 +8,7 @@ export interface IavailabilityTime {
     consultationDuration: number,
     price: string
     mode: "online" | "in-person"
-    status: "active" | "inactive" | "expired"
+    status: "active" | "inactive" | "expired" | "booked"
 }
 
 export interface SlotEntity {

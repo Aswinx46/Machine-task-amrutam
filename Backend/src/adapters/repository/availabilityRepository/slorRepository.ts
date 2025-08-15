@@ -105,6 +105,25 @@ export class SlotRepository implements IslotRepository {
 
         return { slots, totalPages }
     }
+    async getStatusOfSlot(slotId: string, timingId: string): Promise<string | null> {
+        const filter = {
+            _id: slotId,
+            "timings._id": timingId
+        }
+        const doc = await slotModel.findOne(filter).select('status').lean<{ _id: string, status: string }>()
+        return doc?.status || null
+    }
+    async findSlotAndUpdateStatus(slotId: string, timingId: string): Promise<boolean> {
+        const filter = {
+            _id: slotId,
+            "timings._id": timingId
+        }
+        const result = await slotModel.updateOne(
+            filter,
+            { $set: { "timings.$.status": "booked" } }
+        );
+        return result.modifiedCount === 1
+    }
 }
 
 

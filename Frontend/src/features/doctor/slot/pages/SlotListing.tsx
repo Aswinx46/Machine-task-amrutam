@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SlotsManager } from '../component/SlotManager';
+import { SlotsManager } from '../../../../components/slots/SlotManager';
 import type { SlotEntity, IavailabilityTime } from '@/types/appointment/appointment';
 import { useFindSlotsOfDoctor } from '../hooks/slotHook';
 import Pagination from '@/components/Pagination';

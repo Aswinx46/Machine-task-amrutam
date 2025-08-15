@@ -2,19 +2,22 @@ import { RefreshTokenController } from "../../adapters/controllers/authenticatio
 import { SendOtpController } from "../../adapters/controllers/authentication/sendOtpAndRefreshToken/sendOtpController";
 import { UserLoginController } from "../../adapters/controllers/authentication/userAuthentication/login/userLoginController";
 import { SignupController } from "../../adapters/controllers/authentication/userAuthentication/signup/SignupController";
-import { FindSlotsController } from "../../adapters/controllers/user/home/findSlotsController";
+import { FindSlotsController } from "../../adapters/controllers/user/slot/findSlotsController";
+import { BookSlotController } from "../../adapters/controllers/user/slot/slotCreationController";
 import { SlotRepository } from "../../adapters/repository/availabilityRepository/slorRepository";
+import { BookingRepository } from "../../adapters/repository/bookingRepository/bookingRepository";
 import { DoctorRepository } from "../../adapters/repository/doctorRepository/doctorRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
-import { RefreshTokenUseCase } from "../../useCases/Authentication/refreshTokenUseCase";
 import { SendOtpUseCase } from "../../useCases/Authentication/sendOtpUseCase";
-import { FindSlotsUseCase } from "../../useCases/users/home/findSlotsUseCase";
+import { BookSlotUseCase } from "../../useCases/users/slotOperations/bookSlotUseCase";
+import { FindSlotsUseCase } from "../../useCases/users/slotOperations/findSlotsUseCase";
 import { SignupUseCase } from "../../useCases/users/userAuthentication/signupUserUseCase";
 import { UserLoginUseCase } from "../../useCases/users/userAuthentication/userLoginUseCase";
 import { EmailService } from "../services/emailService";
 import { HashPassword } from "../services/hashPassword";
 import { JwtService } from "../services/jwtService";
 import { OtpService } from "../services/otpService";
+import { RedisService } from "../services/redisService";
 
 //-------------------------------------sendOtp User ---------------------------------
 const otpService = new OtpService()
@@ -39,3 +42,9 @@ export const injectedUserLoginController = new UserLoginController(userLoginUseC
 const slotRepository = new SlotRepository()
 const findSlotsUseCase = new FindSlotsUseCase(slotRepository)
 export const injectedFindSlotsController = new FindSlotsController(findSlotsUseCase)
+
+//---------------------------------------- bookingCreation in user side--------------------
+const redisService = new RedisService()
+const bookingRepository = new BookingRepository()
+const bookSlotUseCase = new BookSlotUseCase(redisService, emailService, otpService, slotRepository, bookingRepository)
+export const injectedBookSlotController = new BookSlotController(bookSlotUseCase)

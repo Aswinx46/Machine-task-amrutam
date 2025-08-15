@@ -1,5 +1,3 @@
-
-
 import { useState } from "react"
 import { Search, Filter, SlidersHorizontal } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -11,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider"
 import { useFindSlots } from "../hooks/userHomeHooks"
 import Pagination from "@/components/Pagination"
+import SlotCard from "@/components/slots/SlotCard"
+import type { IavailabilityTime } from "@/types/appointment/appointment"
 
 interface FilterState {
   online: boolean
@@ -58,6 +58,11 @@ export function UserHomePage() {
   })
   const slotData = useFindSlots(page, limit, searchQuery, mode || '', filters.minPrice || '', filters.maxPrice || '', duration || '')
   console.log(slotData.data)
+
+  const handleBookSlot = (slot: IavailabilityTime, slotId: string, timingIndex: number) => {
+
+  }
+
   const handleFilterChange = (key: keyof FilterState, value: string | number | boolean) => {
     console.log('this is the value', value)
     if (key === 'online') {
@@ -259,14 +264,7 @@ export function UserHomePage() {
           </div>
 
           {/* Main Content Area - Left Empty for Future Content */}
-          <div className="flex-1">
-            <div className="min-h-96 border-2 border-dashed border-muted-foreground/25 rounded-lg flex items-center justify-center">
-              <div className="text-center text-muted-foreground">
-                <div className="text-lg font-medium mb-2">Content Area</div>
-                <p className="text-sm">This space is reserved for your main content</p>
-              </div>
-            </div>
-          </div>
+          {slotData.data && <SlotCard handleBookSlot={handleBookSlot} isDoctor={false} role="user" slots={slotData.data.slots} />}
         </div>
       </div>
       {slotData.data && slotData.data.slots.length > 0 && < Pagination current={page} setPage={setPage} total={slotData.data.totalPages} />}

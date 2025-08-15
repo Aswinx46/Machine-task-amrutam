@@ -19,7 +19,7 @@ export const slotSchema = new Schema<SlotEntity>({
         consultationDuration: { type: Number, required: true },
         price: { type: Number, required: true },
         mode: { type: String, enum: ["online", "in-person"], required: true, default: 'online' },
-        status: { type: String, enum: ["active", "inactive", "expired"], required: true, default: 'active' },
+        status: { type: String, enum: ["active", "inactive", "expired", "booked"], required: true, default: 'active' },
     }],
 
 }, {

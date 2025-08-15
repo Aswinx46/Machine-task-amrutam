@@ -4,4 +4,5 @@ export interface IredisService {
     get(key: string): Promise<string | null>
     set(key: string, seconds: number, value: string): Promise<void>
     del(key: string): Promise<void>
+    lockSlot(key: string, value: string, seconds: number): Promise<string | null>
 }

@@ -34,6 +34,16 @@ export const bookingSchema = new Schema<BookingEntity>({
         type: String,
         enum: ['available', 'booked', 'expired']
     },
+    slotId: {
+        type: Schema.Types.ObjectId,
+        ref: "availabilityOfDoctors",
+        required: true
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        required: true
+    }
 }, {
     timestamps: true
 })
