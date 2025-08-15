@@ -42,10 +42,9 @@ export class SlotRepository implements IslotRepository {
             searchFilter.timings.$elemMatch.mode = mode;
         }
         if (minPrice || maxPrice) {
-            console.log('inside minprice and maxprice')
             searchFilter.timings.$elemMatch.price = {};
             if (minPrice) searchFilter.timings.$elemMatch.price.$gte = Number(minPrice)
-            if (maxPrice) searchFilter.timings.$elemMatch.price.$gte = Number(maxPrice)
+            if (maxPrice) searchFilter.timings.$elemMatch.price.$lte = Number(maxPrice)
         }
         if (searchQuery) {
             searchFilter.$or = [
@@ -54,7 +53,6 @@ export class SlotRepository implements IslotRepository {
             ]
         }
         if (duration) {
-            console.log('inside the duration statement')
             searchFilter.timings.$elemMatch.consultationDuration = Number(duration)
         }
         const slots = await slotModel.aggregate([
