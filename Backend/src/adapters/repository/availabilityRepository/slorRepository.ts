@@ -111,8 +111,11 @@ export class SlotRepository implements IslotRepository {
             _id: slotId,
             "timings._id": timingId
         }
-        const doc = await slotModel.findOne(filter).select('status').lean<{ _id: string, status: string }>()
-        return doc?.status || null
+        const doc = await slotModel
+            .findOne(filter, { "timings.$": 1 }) // project only matching element
+            .lean<{ _id: string; timings: { _id: string; status: string }[] }>();
+
+        return doc?.timings?.[0]?.status || null;
     }
     async findSlotAndUpdateStatus(slotId: string, timingId: string): Promise<boolean> {
         const filter = {
@@ -139,7 +142,7 @@ export class SlotRepository implements IslotRepository {
     async findDetailsOfASlot(slotId: string, doctorId: string): Promise<SlotPopulatedEntity | null> {
         return await slotModel.findOne({ _id: slotId, doctorId }).select('-__v -createdAt -updatedAt').populate({
             path: "doctorId",
-            select: "-password -theme -role -createdAt -updatedAt -__v", 
+            select: "-password -theme -role -createdAt -updatedAt -__v",
         }).lean<SlotPopulatedEntity>()
     }
 }

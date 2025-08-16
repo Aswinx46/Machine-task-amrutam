@@ -22,14 +22,16 @@ export class BookSlotController {
     }
     async handleVerifyOtpAndCreateBooking(req: Request, res: Response): Promise<void> {
         try {
-            const { data, enteredOtp, email } = req.body
+            const { data, otp, email } = req.body
+            console.log('this is the data',data)
             const verifyData = bookingDataValidator.safeParse(data)
             if (!verifyData.success) {
+                console.log('this is the errors',verifyData.error.flatten().fieldErrors)
                 const messages = Object.values(verifyData.error.flatten().fieldErrors).flat();
                 res.status(HttpStatus.BAD_REQUEST).json({ message: "invalid input data", error: messages.toString() })
                 return
             }
-            await this._bookSlotUseCase.verifyOtpAndCreateBooking(data, enteredOtp, email)
+            await this._bookSlotUseCase.verifyOtpAndCreateBooking(data, otp, email)
             res.status(HttpStatus.CREATED).json({ message: "Booking Created" })
         } catch (error) {
             console.log('error while verifying the otp and creating the booking', error)

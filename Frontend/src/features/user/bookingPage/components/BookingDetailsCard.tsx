@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Clock, User, Video, MapPin, DollarSign, CheckCircle, Award, GraduationCap, Mail, MapPinIcon, X } from 'lucide-react';
-import type { IavailabilityTime, SlotEntity } from '@/types/appointment/appointment';
+import type { IavailabilityTime, SlotWithDoctorDetailsEntity } from '@/types/appointment/appointment';
 import type { DoctorEntity } from '@/types/Doctor/DoctorType';
 
-
-
-
-
-
 interface SlotBookingProps {
-  slot: SlotEntity;
+  slot: SlotWithDoctorDetailsEntity;
   timing: IavailabilityTime;
   doctor: DoctorEntity;
   onBook: (slotId: string, timingDetails: IavailabilityTime) => void;
@@ -247,7 +242,7 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                       <span className="font-semibold text-gray-700">Time</span>
                     </div>
                     <p className="text-gray-800 font-medium">
-                      {new Date(timing.startTime).toLocaleTimeString()} - {new Date(timing.endTime).toLocaleTimeString({})}
+                      {new Date(timing.startTime).toLocaleTimeString()} - {new Date(timing.endTime).toLocaleTimeString()}
                     </p>
                     <p className="text-sm text-gray-600 mt-1">
                       Duration: {timing.consultationDuration} minutes

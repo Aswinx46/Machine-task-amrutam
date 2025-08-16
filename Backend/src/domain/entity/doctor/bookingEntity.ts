@@ -5,8 +5,8 @@ export interface BookingEntity {
     doctorId: ObjectId | string;
     ruleId?: ObjectId | string;
     date: Date;
-    startTime: string
-    endTime: string;
+    startTime: Date
+    endTime: Date;
     status: "available" | "booked" | "expired"
     recurring: boolean
     slotId: ObjectId | string

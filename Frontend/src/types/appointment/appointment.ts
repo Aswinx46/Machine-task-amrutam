@@ -41,19 +41,18 @@ export interface SlotEntity {
 }
 
 export interface BookingEntity {
-    _id?: string;
-    doctorId: string;
-    ruleId?: string;
+    _id?:  string;
+    doctorId:  string;
+    ruleId?:  string;
     date: Date;
-    startTime: string;
-    endTime: string;
-    status: "available" | "booked" | "expired";
-    recurring: boolean;
-    patientName?: string;
-    patientEmail?: string;
-    patientPhone?: string;
-    consultationType?: "online" | "in-person";
-    notes?: string;
+    startTime: Date
+    endTime: Date;
+    status: "available" | "booked" | "expired"
+    consultationType:"online" | "in-person"
+    recurring: boolean
+    slotId: string
+    userId: string
+    timingId:  string
 }
 
 export type BookingStatus = "booked" | "completed" | "cancelled";
@@ -70,13 +69,13 @@ export interface DashboardBooking extends Omit<BookingEntity, "status"> {
 }
 
 export interface Doctor {
-    id: string;
+    _id: string;
     name: string;
     specialization: string[];
     bio:string;
     phone:string;
     address:string
   }
-export interface SlotWithDoctorDetailsEntity extends SlotEntity {
-    doctor:Doctor
+export interface SlotWithDoctorDetailsEntity extends Omit<SlotEntity,"doctorId"> {
+    doctorId:Doctor
 }

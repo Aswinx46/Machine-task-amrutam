@@ -8,7 +8,6 @@ export class FindSlotsUseCase implements IfindSlotsUseCase {
         const todayDate = new Date();
         todayDate.setHours(0, 0, 0, 0);
         const { slots, totalPages } = await this._slotRepository.findSlots(page, limit, todayDate, searchQuery, filter, mode, minPrice, maxPrice, duration)
-        console.log('this is the slots', slots)
         return { slots, totalPages }
     }
 }

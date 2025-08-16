@@ -13,7 +13,7 @@ export const bookingSchema = new Schema<BookingEntity>({
         required: true
     },
     endTime: {
-        type: String,
+        type: Date,
         required: true
     },
     recurring: {
@@ -27,7 +27,7 @@ export const bookingSchema = new Schema<BookingEntity>({
         required: false
     },
     startTime: {
-        type: String,
+        type: Date,
         required: true
     },
     status: {
@@ -43,6 +43,10 @@ export const bookingSchema = new Schema<BookingEntity>({
         type: Schema.Types.ObjectId,
         ref: "user",
         required: true
+    },
+    timingId: {
+        type:String,
+        required:true
     }
 }, {
     timestamps: true

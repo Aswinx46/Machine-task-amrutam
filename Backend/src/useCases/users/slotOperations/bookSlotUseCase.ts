@@ -9,8 +9,8 @@ import { IBookSlotUseCase } from "../../../domain/interface/useCaseInterfaces/Cl
 export class BookSlotUseCase implements IBookSlotUseCase {
     constructor(private _redisService: IredisService, private _emailService: IemailService, private _otpService: IotpService, private _slotRepository: IslotRepository, private _bookingRepository: IbookingRepositoryInterface) { }
     async lockSlotAndSendOtp(email: string, slotId: string, userId: string, timingId: string): Promise<void> {
-        const key = `slot:${slotId}:timing:${timingId}`
-        await this.checkIsSlotLocked(key)
+        const key = `lock:slot:${slotId}:timing:${timingId}`
+        await this.checkIsSlotLocked(key, userId)
         const slotStatus = await this._slotRepository.getStatusOfSlot(slotId, timingId)
         if (!slotStatus) throw new Error("No slot found in this ID")
         if (slotStatus !== 'active') throw new Error("Slot is not Active now")
@@ -23,7 +23,8 @@ export class BookSlotUseCase implements IBookSlotUseCase {
 
 
     async verifyOtpAndCreateBooking(data: BookingEntity, otp: string, email: string): Promise<void> {
-        const key = `slot:${data.slotId}:timing:${data.timingId}`
+        const key = `lock:slot:${data.slotId}:timing:${data.timingId}`
+        console.log('this is the otp',otp)
         const verifyOtp = await this._otpService.verifyOtp(email, otp)
         if (!verifyOtp) throw new Error("Invalid OTP")
         const userId = await this._redisService.get(key)
@@ -39,12 +40,12 @@ export class BookSlotUseCase implements IBookSlotUseCase {
     } // verifyting the otp and creating the booking and changing the status of the slot into booked
 
 
-    async checkIsSlotLocked(key: string): Promise<void> {
+    async checkIsSlotLocked(key: string, userId: string): Promise<void> {
         const isSlotIsLocked = await this._redisService.get(key)
-        if (isSlotIsLocked) throw new Error("Slot is already Reserved")
+        if (isSlotIsLocked && isSlotIsLocked !== userId) throw new Error("Slot is already Reserved")
     }
 
-    
+
     async resendOtp(email: string): Promise<void> {
         const otp = this._otpService.genarateOtp()
         await this._otpService.storeOtp(email, otp)
