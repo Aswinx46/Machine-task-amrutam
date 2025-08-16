@@ -19,10 +19,10 @@ export interface SlotFormValues {
     price: string;
     mode: "online" | "in-person";
     status: "active" | "inactive" | "expired";
-  }
+}
 
-export interface IbookedSlotDetails extends Omit<IavailabilityTime,'bookedBy'>{
-    bookedBy:BookedUserDetails
+export interface IbookedSlotDetails extends Omit<IavailabilityTime, 'bookedBy'> {
+    bookedBy: BookedUserDetails
 }
 
 export interface BookedUserDetails {
@@ -66,4 +66,12 @@ export interface DashboardBooking extends Omit<BookingEntity, "status"> {
     patientEmail?: string;
     patientPhone?: string;
     consultationType: "online" | "in-person"
+}
+
+export interface SlotWithDoctorDetailsEntity extends SlotEntity {
+    doctor: {
+        _id: string,
+        name: string,
+        specialization: string[], 
+    }
 }

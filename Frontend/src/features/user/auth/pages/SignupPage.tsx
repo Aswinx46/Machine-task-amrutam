@@ -56,6 +56,7 @@ const Signup = () => {
     useSignupMutation.mutate({ user: updatedUser, enteredOtp: otp }, {
       onSuccess: () => {
         setShowOtpModal(false)
+        toast('Account Created Please Login')
         navigate('/login')
       }, onError: (err) => {
         toast(err.message)

@@ -1,9 +1,9 @@
-import type { IavailabilityTime, SlotEntity } from '@/types/appointment/appointment'
+import type { IavailabilityTime, SlotWithDoctorDetailsEntity } from '@/types/appointment/appointment'
 import { motion } from 'framer-motion';
 import { Calendar, Clock, Edit3, IndianRupee, MapPin, Monitor, User } from 'lucide-react';
 
 interface IslotCardProps {
-    slots: SlotEntity[],
+    slots: SlotWithDoctorDetailsEntity[],
     isDoctor: boolean,
     role: string,
     handleEditSlot?: (slot: IavailabilityTime, slotId: string, timingIndex: number) => void
@@ -66,9 +66,9 @@ function SlotCard({ slots, isDoctor, role, handleEditSlot }: IslotCardProps) {
                                     <Calendar className="w-6 h-6" />
                                     {formatDate(slot.date)}
                                 </h3>
-                                <p className="text-blue-100 mt-1">
-                                    Doctor ID: {slot.doctorId}
-                                </p>
+                                {role !== 'doctor' && <p className="text-blue-100 mt-1">
+                                    Doctor Name: {slot.doctor.name}
+                                </p>}
                             </div>
                             <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
                                 <span className="text-white font-medium">

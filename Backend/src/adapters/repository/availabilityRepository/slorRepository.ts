@@ -1,4 +1,4 @@
-import { SlotEntity, SlotPopulatedEntity } from "../../../domain/entity/doctor/slotEntity";
+import { IavailabilityTime, SlotEntity, SlotPopulatedEntity } from "../../../domain/entity/doctor/slotEntity";
 import { IslotRepository } from "../../../domain/interface/repositoryInterfaces/slotRepositoryInterface";
 import { slotModel } from "../../../framework/database/models/slotModel";
 export class SlotRepository implements IslotRepository {
@@ -18,6 +18,7 @@ export class SlotRepository implements IslotRepository {
         })
     }
     async findSlotsOfADoctor(doctorId: string, page: number, limit: number): Promise<{ slots: SlotEntity[]; totalPages: number; }> {
+        console.log("inside")
         const skip = (page - 1) * limit
         const [slots, totalCount] = await Promise.all([
             slotModel.find({ doctorId }).skip(skip).limit(limit),
@@ -26,17 +27,17 @@ export class SlotRepository implements IslotRepository {
         const totalPages = Math.ceil(totalCount / limit)
         return { slots, totalPages }
     }
-    async findSlots(page: number, limit: number, searchQuery?: string, filter?: string, mode?: string, minPrice?: number, maxPrice?: number, duration?: number): Promise<{ slots: SlotPopulatedEntity[]; totalPages: number; }> {
+    async findSlots(page: number, limit: number, todayDate: Date, searchQuery?: string, filter?: string, mode?: string, minPrice?: number, maxPrice?: number, duration?: number): Promise<{ slots: SlotPopulatedEntity[]; totalPages: number; }> {
         const skip = (page - 1) * limit
         const searchFilter: any = {
             timings: {
                 $elemMatch: {
                     isBooked: false,
                     status: "active",
-                    // startTime: { $gte: new Date() }
+                    startTime: { $gte: new Date() }
                 }
             },
-            date: { $gte: new Date() }
+            date: { $gte: todayDate }
         };
         if (mode) {
             searchFilter.timings.$elemMatch.mode = mode;
@@ -123,6 +124,17 @@ export class SlotRepository implements IslotRepository {
             { $set: { "timings.$.status": "booked" } }
         );
         return result.modifiedCount === 1
+    }
+    async findSlotByDoctorAndDate(doctorId: string, startOfDate: Date, endOfDate: Date): Promise<SlotEntity | null> {
+        return await slotModel.findOne({
+            doctorId,
+            date: { $gte: startOfDate, $lte: endOfDate },
+        })
+    }
+    async addTimingToSlot(slotId: string, timings: IavailabilityTime[]): Promise<SlotEntity | null> {
+        return await slotModel.findByIdAndUpdate(slotId, {
+            $push: { timings: { $each: timings } }
+        })
     }
 }
 

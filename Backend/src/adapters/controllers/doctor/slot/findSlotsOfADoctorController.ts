@@ -7,11 +7,11 @@ export class FindSlotsOfADoctorController {
     constructor(private _findSlotsOfADoctorUseCase: IfindSlotsOfADoctor) { }
     async execute(req: Request, res: Response): Promise<void> {
         try {
-            console.log('inside controller')
             const { page, limit } = req.query
             const parsedPage = parseInt(page?.toString()!, 10) || 1
             const parsedLimit = parseInt(limit?.toString()!, 10) || 5
             const userId = (req as any).user.userId
+            console.log('this is the userId',userId)
             const { slots, totalPages } = await this._findSlotsOfADoctorUseCase.findSlots(userId, parsedPage, parsedLimit)
             res.status(HttpStatus.OK).json({
                 message: "Slots Fetched",

@@ -67,8 +67,10 @@ export function UserHomePage() {
     console.log('this is the value', value)
     if (key === 'online') {
       setMode('online')
+      setFilters((prev) => ({ ...prev, online: !prev.online }))
     } else if (key === 'inperson') {
       setMode('inperson')
+      setFilters((prev) => ({ ...prev, inperson: !prev.inperson }))
     } else if (key === 'duration') {
       setDuration(Number(value))
     }
@@ -178,6 +180,7 @@ export function UserHomePage() {
                           id="inperson"
                           checked={filters.inperson}
                           onCheckedChange={(checked) => handleFilterChange("inperson", checked)}
+                          className="border-2 border-black"
                         />
                         <Label htmlFor="inperson" className="text-sm">
                           In-Person

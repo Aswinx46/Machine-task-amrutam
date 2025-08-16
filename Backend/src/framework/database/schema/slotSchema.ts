@@ -27,3 +27,4 @@ export const slotSchema = new Schema<SlotEntity>({
 })
 
 slotSchema.index({ timings: 1, doctorId: 1 })
+slotSchema.index({ doctorId: 1, date: 1 }, { unique: true });

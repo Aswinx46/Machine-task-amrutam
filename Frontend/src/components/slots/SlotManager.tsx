@@ -3,12 +3,12 @@ import { motion } from 'framer-motion';
 import {
   Calendar,
 } from 'lucide-react';
-import type { SlotEntity, IavailabilityTime, SlotFormValues } from '@/types/appointment/appointment';
+import type {  IavailabilityTime, SlotFormValues, SlotWithDoctorDetailsEntity } from '@/types/appointment/appointment';
 import { SlotEditModal } from '../../features/doctor/slot/component/EditSlotModal';
 import SlotCard from './SlotCard';
 
 interface SlotsManagerProps {
-  slots: SlotEntity[];
+  slots: SlotWithDoctorDetailsEntity[];
   onUpdateSlot?: (slotId: string, timingIndex: number, updatedTiming: IavailabilityTime) => void;
 }
 
