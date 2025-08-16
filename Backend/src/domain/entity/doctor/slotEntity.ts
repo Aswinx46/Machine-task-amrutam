@@ -1,6 +1,8 @@
 import { ObjectId } from "mongoose";
+import { DoctorDTO } from "./doctorDTO";
 
 export interface IavailabilityTime {
+    _id?: string | ObjectId
     startTime: Date,
     endTime: Date,
     isBooked: boolean,
@@ -20,9 +22,9 @@ export interface SlotEntity {
 
 
 export interface SlotPopulatedEntity extends Omit<SlotEntity, "doctorId"> {
-    doctorId: {
-        _id: string | ObjectId,
-        name: string,
-        specification: string
-    }
+    doctorId: DoctorDTO
+}
+
+export interface SlotPopulatedDTO extends Omit<SlotPopulatedEntity, "timings"> {
+    timings: IavailabilityTime
 }

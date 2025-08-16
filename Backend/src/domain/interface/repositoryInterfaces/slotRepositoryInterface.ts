@@ -9,4 +9,5 @@ export interface IslotRepository {
     findSlotAndUpdateStatus(slotId: string, timingId: string): Promise<boolean>
     findSlotByDoctorAndDate(doctorId: string, startOfDate: Date, endOfDate: Date): Promise<SlotEntity | null>
     addTimingToSlot(slotId: string, timings: IavailabilityTime[]): Promise<SlotEntity | null>
+    findDetailsOfASlot(slotId: string, doctorId: string): Promise<SlotPopulatedEntity | null>
 }

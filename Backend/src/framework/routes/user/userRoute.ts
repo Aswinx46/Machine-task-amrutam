@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedBookSlotController, injectedFindSlotsController, injectedSendOtpController, injectedSignupController, injectedUserLoginController } from "../../DI/userDI";
+import { injectedBookSlotController, injectedFindSlotDetailsController, injectedFindSlotsController, injectedSendOtpController, injectedSignupController, injectedUserLoginController } from "../../DI/userDI";
 import { injectedRefreshTokenController } from "../../DI/middlewareAndRefreshTokenDI";
 
 export class UserRoute {
@@ -29,6 +29,9 @@ export class UserRoute {
         })
         this.userRoute.post('/slots/otp/verify', (req: Request, res: Response) => {
             injectedBookSlotController.handleVerifyOtpAndCreateBooking(req, res)
+        })
+        this.userRoute.get('/slot/:slotId/:doctorId/:timingId', (req: Request, res: Response) => {
+            injectedFindSlotDetailsController.handleFindSlotDetails(req, res)
         })
     }
 }

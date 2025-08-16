@@ -34,7 +34,7 @@ export class SlotRepository implements IslotRepository {
                 $elemMatch: {
                     isBooked: false,
                     status: "active",
-                    
+
                 }
             },
             date: { $gte: todayDate }
@@ -135,6 +135,12 @@ export class SlotRepository implements IslotRepository {
         return await slotModel.findByIdAndUpdate(slotId, {
             $push: { timings: { $each: timings } }
         })
+    }
+    async findDetailsOfASlot(slotId: string, doctorId: string): Promise<SlotPopulatedEntity | null> {
+        return await slotModel.findOne({ _id: slotId, doctorId }).select('-__v -createdAt -updatedAt').populate({
+            path: "doctorId",
+            select: "-password -theme -role -createdAt -updatedAt -__v", 
+        }).lean<SlotPopulatedEntity>()
     }
 }
 

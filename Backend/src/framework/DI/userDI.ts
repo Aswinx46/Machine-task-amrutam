@@ -2,6 +2,7 @@ import { RefreshTokenController } from "../../adapters/controllers/authenticatio
 import { SendOtpController } from "../../adapters/controllers/authentication/sendOtpAndRefreshToken/sendOtpController";
 import { UserLoginController } from "../../adapters/controllers/authentication/userAuthentication/login/userLoginController";
 import { SignupController } from "../../adapters/controllers/authentication/userAuthentication/signup/SignupController";
+import { FindSlotDetailsController } from "../../adapters/controllers/user/slot/findSlotDetailsController";
 import { FindSlotsController } from "../../adapters/controllers/user/slot/findSlotsController";
 import { BookSlotController } from "../../adapters/controllers/user/slot/slotCreationController";
 import { SlotRepository } from "../../adapters/repository/availabilityRepository/slorRepository";
@@ -10,6 +11,7 @@ import { DoctorRepository } from "../../adapters/repository/doctorRepository/doc
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
 import { SendOtpUseCase } from "../../useCases/Authentication/sendOtpUseCase";
 import { BookSlotUseCase } from "../../useCases/users/slotOperations/bookSlotUseCase";
+import { FindDetailsOfASlotUseCase } from "../../useCases/users/slotOperations/findDetailsOfASlot";
 import { FindSlotsUseCase } from "../../useCases/users/slotOperations/findSlotsUseCase";
 import { SignupUseCase } from "../../useCases/users/userAuthentication/signupUserUseCase";
 import { UserLoginUseCase } from "../../useCases/users/userAuthentication/userLoginUseCase";
@@ -48,3 +50,7 @@ const redisService = new RedisService()
 const bookingRepository = new BookingRepository()
 const bookSlotUseCase = new BookSlotUseCase(redisService, emailService, otpService, slotRepository, bookingRepository)
 export const injectedBookSlotController = new BookSlotController(bookSlotUseCase)
+
+//------------------------------------------------find slot details --------------
+const findSlotDetailsUseCase = new FindDetailsOfASlotUseCase(slotRepository)
+export const injectedFindSlotDetailsController = new FindSlotDetailsController(findSlotDetailsUseCase)
