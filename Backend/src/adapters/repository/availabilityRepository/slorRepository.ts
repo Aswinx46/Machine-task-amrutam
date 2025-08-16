@@ -34,7 +34,7 @@ export class SlotRepository implements IslotRepository {
                 $elemMatch: {
                     isBooked: false,
                     status: "active",
-                    startTime: { $gte: new Date() }
+                    
                 }
             },
             date: { $gte: todayDate }

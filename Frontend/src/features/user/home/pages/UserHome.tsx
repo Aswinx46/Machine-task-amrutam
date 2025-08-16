@@ -57,7 +57,7 @@ export function UserHomePage() {
     duration: "any",
   })
   const slotData = useFindSlots(page, limit, searchQuery, mode || '', filters.minPrice || '', filters.maxPrice || '', duration || '')
-  console.log(slotData.data)
+
 
   const handleBookSlot = (slot: IavailabilityTime, slotId: string, timingIndex: number) => {
 

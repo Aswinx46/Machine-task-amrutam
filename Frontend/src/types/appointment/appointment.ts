@@ -68,10 +68,14 @@ export interface DashboardBooking extends Omit<BookingEntity, "status"> {
     consultationType: "online" | "in-person"
 }
 
+export interface Doctor {
+    id: string;
+    name: string;
+    specialization: string[];
+    bio:string;
+    phone:string;
+    address:string
+  }
 export interface SlotWithDoctorDetailsEntity extends SlotEntity {
-    doctor: {
-        _id: string,
-        name: string,
-        specialization: string[], 
-    }
+    doctor:Doctor
 }
