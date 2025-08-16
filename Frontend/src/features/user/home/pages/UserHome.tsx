@@ -100,7 +100,7 @@ export function UserHomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen bg-background ">
       {/* Header with Search Bar */}
       <div className="border-b bg-card">
         <div className="container mx-auto px-4 py-6">
@@ -117,8 +117,8 @@ export function UserHomePage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex gap-6">
+      <div className="container mx-auto px-4 py-6 ">
+        <div className="flex gap-6 ">
           {/* Left Sidebar - Filters and Sorting */}
           <div className="w-80 flex-shrink-0">
             <div className="space-y-6">

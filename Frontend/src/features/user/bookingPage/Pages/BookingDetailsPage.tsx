@@ -32,18 +32,15 @@ const ExampleUsage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 py-8">
-            <div className="container mx-auto px-4">
-                <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
-                    Book Your Appointment
-                </h1>
+        <div className="min-h-screen bg-gray-100 ">
+
                 {slot && doctor && timing && <SlotBookingComponent
                     slot={slot}
                     timing={timing}
                     doctor={doctor}
                     onBook={handleBooking}
                 />}
-            </div>
+        
         </div>
     );
 };

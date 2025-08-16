@@ -49,7 +49,7 @@ function SlotCard({ slots, isDoctor, role, handleEditSlot, handleBookSlot }: Isl
         });
     };
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 h-[75vh] hide-scrollbar overflow-y-scroll">
             {slots.map((slot, slotIndex) => (
                 <motion.div
                     key={slot._id || slotIndex}

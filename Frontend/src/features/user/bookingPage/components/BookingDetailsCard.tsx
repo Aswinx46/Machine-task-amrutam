@@ -26,22 +26,7 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
 }) => {
   const [isBooking, setIsBooking] = useState(false);
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
-  };
 
   const handleBookSlot = async () => {
     if (timing.isBooked || timing.status !== 'active') return;
@@ -76,14 +61,14 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+      className="h-auto md:h-screen  w-full flex justify-center"
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-hidden relative"
+        className="bg-white  w-full md:w-3/4   overflow-hidden relative"
       >
         {/* Close button */}
         {onClose && (
