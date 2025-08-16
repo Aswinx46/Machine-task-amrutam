@@ -11,6 +11,7 @@ import { useFindSlots } from "../hooks/userHomeHooks"
 import Pagination from "@/components/Pagination"
 import SlotCard from "@/components/slots/SlotCard"
 import type { IavailabilityTime } from "@/types/appointment/appointment"
+import { useNavigate } from "react-router-dom"
 
 interface FilterState {
   online: boolean
@@ -57,10 +58,13 @@ export function UserHomePage() {
     duration: "any",
   })
   const slotData = useFindSlots(page, limit, searchQuery, mode || '', filters.minPrice || '', filters.maxPrice || '', duration || '')
+  const navigate = useNavigate()
 
-
-  const handleBookSlot = (slot: IavailabilityTime, slotId: string, timingIndex: number) => {
-
+  const handleBookSlot = (slot: IavailabilityTime, slotId: string, timingId: string, doctorId: string) => {
+    console.log('this is the slotId', slotId)
+    console.log('this s the doctorId', doctorId)
+    console.log('this is teh timing id', timingId)
+    navigate(`/bookingDetails/${slotId}/${doctorId}/${timingId}`)
   }
 
   const handleFilterChange = (key: keyof FilterState, value: string | number | boolean) => {

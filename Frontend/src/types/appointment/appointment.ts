@@ -1,6 +1,7 @@
 
 
 export interface IavailabilityTime {
+    _id?:string
     startTime: Date;
     endTime: Date;
     isBooked: boolean;

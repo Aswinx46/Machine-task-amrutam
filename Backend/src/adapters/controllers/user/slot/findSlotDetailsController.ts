@@ -9,7 +9,6 @@ export class FindSlotDetailsController {
         try {
             const { slotId, doctorId, timingId } = req.params
             const slots = await this._findSlotDetailsUseCase.findDetailsOfASlot(slotId, doctorId, timingId)
-            console.log('this is the slot data', slots)
             res.status(HttpStatus.OK).json({ message: "Slots fetched", slots })
         } catch (error) {
             console.log('error while finding the details of a slot', error)

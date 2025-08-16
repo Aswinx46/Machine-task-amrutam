@@ -12,7 +12,7 @@ const UserRoute = () => {
             <Route path='/' element={<Login />} />
             <Route path='/login' element={<Login />} />
             <Route path='/home' element={<UserHomePage />} />
-            <Route path='/bookingDetails' element={<BookingDetailsPage />} />
+            <Route path='/bookingDetails/:slotId/:doctorId/:timingId' element={<BookingDetailsPage />} />
         </Routes>
     )
 }

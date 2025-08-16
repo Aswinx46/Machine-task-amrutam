@@ -1,45 +1,19 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, Clock, User, Video, MapPin, DollarSign, CheckCircle, Award, GraduationCap, Phone, Mail, MapPinIcon, X } from 'lucide-react';
+import { Calendar, Clock, User, Video, MapPin, DollarSign, CheckCircle, Award, GraduationCap, Mail, MapPinIcon, X } from 'lucide-react';
+import type { IavailabilityTime, SlotEntity } from '@/types/appointment/appointment';
+import type { DoctorEntity } from '@/types/Doctor/DoctorType';
 
-// Type definitions based on your interfaces
-interface SlotEntity {
-  id?: string;
-  doctorId: string;
-  date: Date;
-}
 
-interface IAvailabilityTime {
-  startTime: Date;
-  endTime: Date;
-  isBooked: boolean;
-  bookedBy?: string;
-  consultationDuration: number;
-  price: string;
-  mode: "online" | "in-person";
-  status: "active" | "inactive" | "expired";
-}
 
-interface Doctor {
-  id: string;
-  name: string;
-  specialization: string[];
-  // Extended doctor properties for better display
-  rating?: number;
-  experience?: string;
-  qualification?: string;
-  hospital?: string;
-  phone?: string;
-  email?: string;
-  address?: string;
-  about?: string;
-}
+
+
 
 interface SlotBookingProps {
   slot: SlotEntity;
-  timing: IAvailabilityTime;
-  doctor: Doctor;
-  onBook: (slotId: string, timingDetails: IAvailabilityTime) => void;
+  timing: IavailabilityTime;
+  doctor: DoctorEntity;
+  onBook: (slotId: string, timingDetails: IavailabilityTime) => void;
   onClose?: () => void;
 }
 
@@ -77,7 +51,7 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
     // Simulate booking API call
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    onBook(slot.id || '', timing);
+    onBook(slot._id || '', timing);
     setIsBooking(false);
   };
 
@@ -145,7 +119,7 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                 {doctor.specialization.map((spec, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm font-medium"
+                    className="px-3 py-1 bg-white text-black bg-opacity-20 rounded-full text-sm font-medium"
                   >
                     {spec}
                   </span>
@@ -171,7 +145,7 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                 </motion.div>
               )}
 
-              {doctor.experience && (
+              {doctor.experienceYears && (
                 <motion.div
                   className="flex items-start space-x-3"
                   initial={{ opacity: 0, y: 20 }}
@@ -181,12 +155,12 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                   <Award className="w-6 h-6 text-blue-200 mt-1 flex-shrink-0" />
                   <div>
                     <h3 className="font-semibold mb-1">Experience</h3>
-                    <p className="text-blue-100">{doctor.experience}</p>
+                    <p className="text-blue-100">{doctor.experienceYears}</p>
                   </div>
                 </motion.div>
               )}
 
-              {doctor.hospital && (
+              {doctor.clinicName && (
                 <motion.div
                   className="flex items-start space-x-3"
                   initial={{ opacity: 0, y: 20 }}
@@ -196,12 +170,12 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                   <MapPinIcon className="w-6 h-6 text-blue-200 mt-1 flex-shrink-0" />
                   <div>
                     <h3 className="font-semibold mb-1">Hospital</h3>
-                    <p className="text-blue-100">{doctor.hospital}</p>
+                    <p className="text-blue-100">{doctor.clinicName}</p>
                   </div>
                 </motion.div>
               )}
 
-              {doctor.about && (
+              {doctor.bio && (
                 <motion.div
                   className="pt-4 border-t border-white border-opacity-20"
                   initial={{ opacity: 0, y: 20 }}
@@ -209,7 +183,7 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                   transition={{ delay: 0.6 }}
                 >
                   <h3 className="font-semibold mb-2">About</h3>
-                  <p className="text-blue-100 text-sm leading-relaxed">{doctor.about}</p>
+                  <p className="text-blue-100 text-sm leading-relaxed">{doctor.bio}</p>
                 </motion.div>
               )}
 
@@ -221,12 +195,6 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                 transition={{ delay: 0.7 }}
               >
                 <h3 className="font-semibold mb-3">Contact Information</h3>
-                {doctor.phone && (
-                  <div className="flex items-center space-x-3">
-                    <Phone className="w-5 h-5 text-blue-200" />
-                    <span className="text-blue-100">{doctor.phone}</span>
-                  </div>
-                )}
                 {doctor.email && (
                   <div className="flex items-center space-x-3">
                     <Mail className="w-5 h-5 text-blue-200" />
@@ -280,7 +248,7 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                       <span className="font-semibold text-gray-700">Date</span>
                     </div>
                     <p className="text-gray-800 font-medium">
-                      {formatDate(slot.date)}
+                      {new Date(slot.date).toDateString()}
                     </p>
                   </motion.div>
 
@@ -294,7 +262,7 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                       <span className="font-semibold text-gray-700">Time</span>
                     </div>
                     <p className="text-gray-800 font-medium">
-                      {formatTime(timing.startTime)} - {formatTime(timing.endTime)}
+                      {new Date(timing.startTime).toLocaleTimeString()} - {new Date(timing.endTime).toLocaleTimeString({})}
                     </p>
                     <p className="text-sm text-gray-600 mt-1">
                       Duration: {timing.consultationDuration} minutes
@@ -348,7 +316,7 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                 </motion.div>
 
                 {/* Additional Information */}
-                {(timing.bookedBy || slot.id) && (
+                {(timing.bookedBy || slot._id) && (
                   <motion.div
                     className="p-4 bg-gray-50 rounded-xl border border-gray-200 mb-6"
                     initial={{ opacity: 0, height: 0 }}
@@ -357,8 +325,8 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
                   >
                     <h3 className="font-semibold text-gray-700 mb-2">Additional Details</h3>
                     <div className="text-sm text-gray-600 space-y-1">
-                      {slot.id && <p><strong>Slot ID:</strong> {slot.id}</p>}
-                      <p><strong>Doctor ID:</strong> {doctor.id}</p>
+                      {slot._id && <p><strong>Slot ID:</strong> {slot._id}</p>}
+                      <p><strong>Doctor ID:</strong> {doctor._id}</p>
                       {timing.bookedBy && <p><strong>Booked By:</strong> {timing.bookedBy}</p>}
                     </div>
                   </motion.div>

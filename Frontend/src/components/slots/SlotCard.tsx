@@ -1,15 +1,15 @@
 import type { IavailabilityTime, SlotWithDoctorDetailsEntity } from '@/types/appointment/appointment'
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Edit3, IndianRupee, MapPin, Monitor, User } from 'lucide-react';
+import { BookOpenCheck, Calendar, Clock, Edit3, IndianRupee, MapPin, Monitor, User } from 'lucide-react';
 
 interface IslotCardProps {
     slots: SlotWithDoctorDetailsEntity[],
     isDoctor: boolean,
     role: string,
     handleEditSlot?: (slot: IavailabilityTime, slotId: string, timingIndex: number) => void
-    handleBookSlot?: (slot: IavailabilityTime, slotId: string, timingIndex: number) => void
+    handleBookSlot?: (slot: IavailabilityTime, slotId: string, timingId: string, doctorId: string) => void
 }
-function SlotCard({ slots, isDoctor, role, handleEditSlot }: IslotCardProps) {
+function SlotCard({ slots, isDoctor, role, handleEditSlot, handleBookSlot }: IslotCardProps) {
     const getStatusColor = (status: string) => {
         switch (status) {
             case "available":
@@ -171,6 +171,26 @@ function SlotCard({ slots, isDoctor, role, handleEditSlot }: IslotCardProps) {
                                                 {timing.isBooked ? 'Cannot Edit' : 'Edit Slot'}
                                             </>
                                             }
+
+                                        </motion.button>}
+
+                                        {/*book slot button*/}
+                                        {!isDoctor && handleBookSlot && <motion.button
+                                            whileHover={{ scale: timing.isBooked ? 1 : 1.05 }}
+                                            whileTap={{ scale: timing.isBooked ? 1 : 0.95 }}
+                                            onClick={() => handleBookSlot(timing, slot._id || '', timing._id!, slot.doctorId)}
+                                            disabled={timing.isBooked}
+                                            className={`w-full py-3 px-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-200 ${timing.isBooked
+                                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                                : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl'
+                                                }`}
+                                        >
+                                            {role !== 'doctor' && <>
+                                                <BookOpenCheck className="w-4 h-4" />
+                                                Book Now
+                                            </>
+                                            }
+
                                         </motion.button>}
                                     </div>
                                 </motion.div>

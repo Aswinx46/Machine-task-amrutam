@@ -1,31 +1,30 @@
-import type { Doctor, IavailabilityTime, SlotEntity } from "@/types/appointment/appointment";
+import type {  IavailabilityTime, SlotEntity } from "@/types/appointment/appointment";
 import SlotBookingComponent from "../components/BookingDetailsCard";
+import { useParams } from "react-router-dom";
+import { useFindSlotDetails } from "../hooks/bookingHooks";
+import { useEffect, useState } from "react";
+import type{ DoctorEntity } from "@/types/Doctor/DoctorType";
 
 const ExampleUsage: React.FC = () => {
-    const sampleSlot: Omit<SlotEntity, 'timings'> = {
-        _id: 'slot_123',
-        doctorId: 'doc_456',
-        date: new Date(2025, 7, 20) // August 20, 2025
-    };
-
-    const sampleTiming: IavailabilityTime = {
-        startTime: new Date(2025, 7, 20, 10, 0),
-        endTime: new Date(2025, 7, 20, 10, 30),   
-        isBooked: false,
-        consultationDuration: 30,
-        price: '500',
-        mode: 'online',
-        status: 'active'
-    };
-
-    const sampleDoctor: Doctor = {
-        id: 'doc_456',
-        name: 'Dr. Sarah Johnson',
-        specialization: ['Cardiology', 'Internal Medicine'],
-        address:"fasjkdnf",
-        bio:"this is bio",
-        phone:'fajsdf'
-    };
+    const params = useParams()
+    const findSlotDetailsMutate = useFindSlotDetails()
+    const [slot, setSlot] = useState<SlotEntity | null>(null)
+    const [timing, setTiming] = useState<IavailabilityTime | null>(null)
+    const [doctor, setDoctor] = useState<DoctorEntity | null>(null)
+    useEffect(() => {
+        if (!params.slotId || !params.doctorId || !params.timingId) return
+        findSlotDetailsMutate.mutate({ slotId: params.slotId, doctorId: params.doctorId, timingId: params.timingId }, {
+            onSuccess: (data) => {
+                console.log('this is the slot data', data)
+                setSlot(data.slots)
+                setTiming(data.slots.timings)
+                setDoctor(data.slots.doctorId)
+            },
+            onError: (err) => {
+                console.log('error while finding the details o fthe slot', err)
+            }
+        })
+    }, [])
 
     const handleBooking = (slotId: string, timingDetails: IavailabilityTime) => {
         console.log('Booking slot:', slotId, timingDetails);
@@ -38,12 +37,12 @@ const ExampleUsage: React.FC = () => {
                 <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
                     Book Your Appointment
                 </h1>
-                <SlotBookingComponent
-                    slot={sampleSlot}
-                    timing={sampleTiming}
-                    doctor={sampleDoctor}
+                {slot && doctor && timing && <SlotBookingComponent
+                    slot={slot}
+                    timing={timing}
+                    doctor={doctor}
                     onBook={handleBooking}
-                />
+                />}
             </div>
         </div>
     );
