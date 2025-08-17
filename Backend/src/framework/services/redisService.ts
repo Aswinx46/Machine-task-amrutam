@@ -61,6 +61,10 @@ export class RedisService implements IredisService {
             throw error
         }
     }
+    public async lockSlot(key: string, value: string, seconds: number): Promise<string | null> {
+        const result = await this.redis.set(key, value, { NX: true, EX: seconds })
+        return result
+    }
     public getClient(): RedisClientType {
         return this.redis
     }

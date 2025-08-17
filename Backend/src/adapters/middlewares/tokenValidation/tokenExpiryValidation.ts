@@ -6,12 +6,12 @@ export const tokenTimeExpiryValidationMiddleware = (jwtService: IjwtServiceInter
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const authHeader = req.headers.authorization
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            res.status(HttpStatus.BAD_REQUEST).json({ message: 'No token provided' });
+            res.status(HttpStatus.UNAUTHORIZED).json({ message: 'No token provided' });
             return
         }
         const token = authHeader.split(' ')[1]
         try {
-            const decoded =  jwtService.tokenDecode(token)
+            const decoded = jwtService.tokenDecode(token)
             if (!decoded || !decoded.exp) {
                 res.status(HttpStatus.UNAUTHORIZED).json({ error: 'Token expiration done' })
                 return
@@ -22,6 +22,7 @@ export const tokenTimeExpiryValidationMiddleware = (jwtService: IjwtServiceInter
                 res.status(HttpStatus.UNAUTHORIZED).json({ error: "Token Expired" })
                 return
             }
+            (req as any).user = decoded
             next()
         } catch (error) {
             console.log('error while token expiry validation', error)

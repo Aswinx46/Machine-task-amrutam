@@ -8,6 +8,8 @@ export interface IjwtServiceInterface {
     createAccessToken(accessSecretKey: string, userId: string, role: string): string
     createRefreshToken(refreshSecretKey: string, userId: string, role: string): string
     verifyAccessToken(accessToken: string, accessSecretKey: string): any
-    verifyRefreshToken(refreshToken: string, refreshSecretKey: string): { userId: string } | null
+    verifyRefreshToken(refreshToken: string, refreshSecretKey: string): {
+        userId: string, role: string
+    } | null
     tokenDecode(accessToken: string): DecodedTokenEntity | null
 }

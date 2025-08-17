@@ -12,14 +12,14 @@ export const slotSchema = new Schema<SlotEntity>({
         required: true
     },
     timings: [{
-        startTime: { type: String, required: true },
-        endTime: { type: String, required: true },
+        startTime: { type: Date, required: true },
+        endTime: { type: Date, required: true },
         isBooked: { type: Boolean, required: false, default: false },
         bookedBy: { type: Schema.Types.ObjectId, ref: 'user', required: false },
         consultationDuration: { type: Number, required: true },
         price: { type: Number, required: true },
         mode: { type: String, enum: ["online", "in-person"], required: true, default: 'online' },
-        status: { type: String, enum: ["active", "inactive", "expired"], required: true, default: 'active' },
+        status: { type: String, enum: ["active", "inactive", "expired", "booked"], required: true, default: 'active' },
     }],
 
 }, {
@@ -27,3 +27,4 @@ export const slotSchema = new Schema<SlotEntity>({
 })
 
 slotSchema.index({ timings: 1, doctorId: 1 })
+slotSchema.index({ doctorId: 1, date: 1 }, { unique: true });

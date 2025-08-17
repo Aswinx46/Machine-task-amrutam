@@ -6,18 +6,20 @@ import { useSendOtpDoctor, useSignupDoctor } from '../hooks/doctorAuthentication
 import { toast } from 'sonner';
 import { useState } from 'react';
 import OTPModal from '@/components/OtpModal';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DoctorSignup = () => {
     const [showOtpModal, setShowOtpModal] = useState<boolean>(false)
     const [data, setData] = useState<DoctorSignupFormType | null>(null)
     const doctorSignupMutation = useSignupDoctor()
     const sendOtpDoctor = useSendOtpDoctor()
+    const navigate = useNavigate()
     const handleFormSubmit = async (otp: string) => {
         if (!data) return
         doctorSignupMutation.mutate({ data, enteredOtp: otp }, {
             onSuccess: () => {
                 toast("Account Created")
+                navigate('/doctor/login')
                 // console.log('this is the response after creating the doctor', data)
                 setShowOtpModal(false)
             },

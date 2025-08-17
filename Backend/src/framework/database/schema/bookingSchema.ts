@@ -13,7 +13,7 @@ export const bookingSchema = new Schema<BookingEntity>({
         required: true
     },
     endTime: {
-        type: String,
+        type: Date,
         required: true
     },
     recurring: {
@@ -27,13 +27,32 @@ export const bookingSchema = new Schema<BookingEntity>({
         required: false
     },
     startTime: {
-        type: String,
+        type: Date,
         required: true
     },
     status: {
         type: String,
-        enum: ['available', 'booked', 'expired']
+        enum: ['available', 'booked', 'expired','cancelled']
     },
+    slotId: {
+        type: Schema.Types.ObjectId,
+        ref: "availabilityOfDoctors",
+        required: true
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        required: true
+    },
+    timingId: {
+        type: String,
+        required: true
+    },
+    mode: {
+        type: String,
+        enum: ['online', 'in-person'],
+        required:true
+    }
 }, {
     timestamps: true
 })

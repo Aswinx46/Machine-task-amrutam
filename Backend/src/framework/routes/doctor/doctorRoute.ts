@@ -1,6 +1,8 @@
 import { Request, Response, Router } from "express";
-import { injectedCreateSlotController, injectedDoctorLoginController, injectedDoctorSignUpController } from "../../DI/doctorDI";
+import { injectedCreateSlotController, injectedDoctorLoginController, injectedDoctorLogoutController, injectedDoctorSignUpController, injectedFindBookingsOfDoctorController, injectedFindSlotsOfADoctor } from "../../DI/doctorDI";
 import { injectedSendOtpController } from "../../DI/userDI";
+import { roleBasedAuthenticationMiddleware } from "../../../adapters/middlewares/roleBasedAuthentication/roleBasedAuthenticationMiddleware";
+import { injectedTokenBlacklistCheckingMiddleware, injectedTokenExpiryValidationMiddleware } from "../../DI/middlewareAndRefreshTokenDI";
 
 export class DoctorRoute {
     public DoctorRouter: Router
@@ -18,8 +20,16 @@ export class DoctorRoute {
         this.DoctorRouter.post('/login', (req: Request, res: Response) => {
             injectedDoctorLoginController.handleLogin(req, res)
         })
-        this.DoctorRouter.post('/slot', (req: Request, res: Response) => {
+        this.DoctorRouter.route('/slot').post(injectedTokenExpiryValidationMiddleware, injectedTokenBlacklistCheckingMiddleware, roleBasedAuthenticationMiddleware('doctor'), (req: Request, res: Response) => {
             injectedCreateSlotController.handleCreateSlot(req, res)
+        }).get(injectedTokenExpiryValidationMiddleware, injectedTokenBlacklistCheckingMiddleware, roleBasedAuthenticationMiddleware('doctor'), (req: Request, res: Response) => {
+            injectedFindSlotsOfADoctor.execute(req, res)
+        })
+        this.DoctorRouter.get('/bookings', injectedTokenExpiryValidationMiddleware, injectedTokenBlacklistCheckingMiddleware, roleBasedAuthenticationMiddleware('doctor'), (req: Request, res: Response) => {
+            injectedFindBookingsOfDoctorController.handleFindBookingOfDoctor(req, res)
+        })
+        this.DoctorRouter.post('/logout', injectedTokenExpiryValidationMiddleware, injectedTokenBlacklistCheckingMiddleware, roleBasedAuthenticationMiddleware('doctor'), (req: Request, res: Response) => {
+            injectedDoctorLogoutController.handleUserLogoutUseCase(req, res)
         })
     }
 }
