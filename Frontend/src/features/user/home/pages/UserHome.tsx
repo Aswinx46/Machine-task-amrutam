@@ -12,6 +12,7 @@ import Pagination from "@/components/Pagination"
 import SlotCard from "@/components/slots/SlotCard"
 import type { IavailabilityTime } from "@/types/appointment/appointment"
 import { useNavigate } from "react-router-dom"
+import useDebounce from "../hooks/debounceHook"
 
 interface FilterState {
   online: boolean
@@ -45,6 +46,7 @@ const durationOptions = [
 
 export function UserHomePage() {
   const [searchQuery, setSearchQuery] = useState("")
+  const [showSearchQuery, setShowSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState("relevance")
   const [page, setPage] = useState<number>(1)
   const [mode, setMode] = useState<string | null>(null)
@@ -59,6 +61,11 @@ export function UserHomePage() {
   })
   const slotData = useFindSlots(page, limit, searchQuery, mode || '', filters.minPrice || '', filters.maxPrice || '', duration || '')
   const navigate = useNavigate()
+  const handleSearch = (value: string) => {
+    setSearchQuery(value)
+  }
+  const debounce = useDebounce(handleSearch, 3000)
+
 
   const handleBookSlot = (_slot: IavailabilityTime, slotId: string, timingId: string, doctorId: string) => {
     navigate(`/bookingDetails/${slotId}/${doctorId}/${timingId}`)
@@ -105,8 +112,11 @@ export function UserHomePage() {
             <Input
               type="text"
               placeholder="Search for services, courses, or events..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={showSearchQuery}
+              onChange={(e) => {
+                debounce(e.target.value)
+                setShowSearchQuery(e.target.value)
+              }}
               className="pl-10 pr-4 py-3 text-lg"
             />
           </div>
