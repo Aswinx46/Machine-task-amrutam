@@ -60,15 +60,11 @@ export function UserHomePage() {
   const slotData = useFindSlots(page, limit, searchQuery, mode || '', filters.minPrice || '', filters.maxPrice || '', duration || '')
   const navigate = useNavigate()
 
-  const handleBookSlot = (slot: IavailabilityTime, slotId: string, timingId: string, doctorId: string) => {
-    console.log('this is the slotId', slotId)
-    console.log('this s the doctorId', doctorId)
-    console.log('this is teh timing id', timingId)
+  const handleBookSlot = (_slot: IavailabilityTime, slotId: string, timingId: string, doctorId: string) => {
     navigate(`/bookingDetails/${slotId}/${doctorId}/${timingId}`)
   }
 
   const handleFilterChange = (key: keyof FilterState, value: string | number | boolean) => {
-    console.log('this is the value', value)
     if (key === 'online') {
       setMode('online')
       setFilters((prev) => ({ ...prev, online: !prev.online }))

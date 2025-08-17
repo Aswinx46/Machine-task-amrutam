@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedBookSlotController, injectedFindBookingsOfUserController, injectedFindSlotDetailsController, injectedFindSlotsController, injectedSendOtpController, injectedSignupController, injectedUserLoginController } from "../../DI/userDI";
+import { injectedBookSlotController, injectedCancelOrRescheduleBookingController, injectedFindBookingsOfUserController, injectedFindSlotDetailsController, injectedFindSlotsController, injectedSendOtpController, injectedSignupController, injectedUserLoginController } from "../../DI/userDI";
 import { injectedRefreshTokenController, injectedTokenBlacklistCheckingMiddleware, injectedTokenExpiryValidationMiddleware } from "../../DI/middlewareAndRefreshTokenDI";
 
 export class UserRoute {
@@ -35,6 +35,10 @@ export class UserRoute {
         })
         this.userRoute.get('/bookings', injectedTokenExpiryValidationMiddleware, injectedTokenBlacklistCheckingMiddleware, (req: Request, res: Response) => {
             injectedFindBookingsOfUserController.handleFindBookingOfUser(req, res)
+        })
+        this.userRoute.patch('/bookings/:bookingId/:doctorId', injectedTokenExpiryValidationMiddleware, injectedTokenBlacklistCheckingMiddleware, (req: Request, res: Response) => {
+            injectedCancelOrRescheduleBookingController.execute(req, res)
+
         })
     }
 }

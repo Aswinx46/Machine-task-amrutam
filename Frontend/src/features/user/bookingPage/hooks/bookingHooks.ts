@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { findBookingsOfuser, findDetailsOfSlot, sendOtpAndLockSlot, verifyOtpAndCreateBooking } from "../services/bookingService"
-import type { BookingEntity } from "@/types/appointment/appointment"
+import { cancelOrRescheduleBooking, findBookingsOfuser, findDetailsOfSlot, sendOtpAndLockSlot, verifyOtpAndCreateBooking } from "../services/bookingService"
+import type { BookingEntity, BookingStatus } from "@/types/appointment/appointment"
 
 export const useFindSlotDetails = () => {
     return useMutation({
@@ -24,5 +24,11 @@ export const useFindBookingsOfUser = (page: number, filter?: string) => {
     return useQuery({
         queryKey: ['bookingsOfUser', page, filter],
         queryFn: () => findBookingsOfuser(page, filter)
+    })
+}
+
+export const useCancellOrRescheduleBooking = () => {
+    return useMutation({
+        mutationFn: ({ bookingId, doctorId, page, status }: { bookingId: string, doctorId: string, page: number, status: BookingStatus }) => cancelOrRescheduleBooking(bookingId, doctorId, page, status)
     })
 }

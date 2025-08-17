@@ -1,20 +1,61 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react"
-import { useFindBookingsOfUser } from "../hooks/bookingHooks"
+import { useCancellOrRescheduleBooking, useFindBookingsOfUser } from "../hooks/bookingHooks"
 import { BookingCard } from "@/features/doctor/slot/component/BookingCard"
 import type { BookingStatus, PopulatedBookingForUser } from "@/types/appointment/appointment"
 import Pagination from "@/components/Pagination"
 import { BookingFilters } from "@/features/doctor/slot/component/BookingFilters"
+import { toast } from "sonner"
+import { useQueryClient } from "@tanstack/react-query"
 
 
 function UserBookingDetails() {
     const [page, setPage] = useState<number>(1)
     const [activeFilter, setActiveFilter] = useState<BookingStatus>("");
     const bookingData = useFindBookingsOfUser(page, activeFilter)
-    const handleCancelBooking = (bookingId: string) => {
+    const cancelOrRescheduleBooking = useCancellOrRescheduleBooking()
+    const queryClient = useQueryClient();
 
+    const handleCancelBooking = (bookingId: string, doctorId: string) => {
+        // const now = Date.now()
+        // const startTime = new Date(date).getTime()
+        // const diffInHours = (startTime - now) / (1000 * 60 * 60)
+        // if (diffInHours < 24) {
+        //     toast("You cannot cancel or reschedule within 24 hours of the appointment.");
+        //     return
+        // }
+        cancelOrRescheduleBooking.mutate(
+            { bookingId, doctorId, page, status: 'cancelled' },
+            {
+                onSuccess: (data) => {
+                    toast('Booking Cancelled');
+                    console.log('this is the data from the backend', data);
+
+                    queryClient.setQueryData<any>(
+                        ['bookingsOfUser', page, activeFilter],
+                        (oldData: any) => {
+                            if (!oldData) return oldData;
+
+                            return {
+                                ...oldData,
+                                bookings: oldData.bookings.map((booking: any) =>
+                                    booking._id === data.updateBookingData._id
+                                        ? { ...booking, ...data.updateBookingData } // update the cancelled booking
+                                        : booking
+                                ),
+                            };
+                        }
+                    );
+                },
+                onError: (err) => {
+                    toast(err.message);
+                    console.log('error while cancelling the booking', err);
+                },
+            }
+        );
     }
-    const handleRescheduleBooking = (bookingId: string) => {
-
+    const handleRescheduleBooking = (bookingId: string, doctorId: string) => {
+        cancelOrRescheduleBooking.mutate({ bookingId, doctorId, page: 1, status: 'reschedule' })
     }
     return (
         <div className="min-h-screen bg-background">
@@ -38,7 +79,7 @@ function UserBookingDetails() {
                     </div>
                     {bookingData.data?.bookings &&
                         bookingData.data?.bookings.map((booking: PopulatedBookingForUser) => {
-                            return <BookingCard userBookings={booking} cancelBooking={handleCancelBooking} rescheduleBooking={handleRescheduleBooking} />
+                            return <BookingCard key={booking._id} userBookings={booking} cancelBooking={handleCancelBooking} rescheduleBooking={handleRescheduleBooking} />
                         })
                     }
 

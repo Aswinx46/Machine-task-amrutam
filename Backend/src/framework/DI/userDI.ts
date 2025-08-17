@@ -2,6 +2,7 @@ import { RefreshTokenController } from "../../adapters/controllers/authenticatio
 import { SendOtpController } from "../../adapters/controllers/authentication/sendOtpAndRefreshToken/sendOtpController";
 import { UserLoginController } from "../../adapters/controllers/authentication/userAuthentication/login/userLoginController";
 import { SignupController } from "../../adapters/controllers/authentication/userAuthentication/signup/SignupController";
+import { CancelOrRescheduleBookingByUserController } from "../../adapters/controllers/user/bookings/cancelOrRescheduleBookingByUserController";
 import { FindBookingsOfUserController } from "../../adapters/controllers/user/bookings/findBookingsOfUserController";
 import { FindSlotDetailsController } from "../../adapters/controllers/user/slot/findSlotDetailsController";
 import { FindSlotsController } from "../../adapters/controllers/user/slot/findSlotsController";
@@ -11,9 +12,11 @@ import { BookingRepository } from "../../adapters/repository/bookingRepository/b
 import { DoctorRepository } from "../../adapters/repository/doctorRepository/doctorRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
 import { SendOtpUseCase } from "../../useCases/Authentication/sendOtpUseCase";
+import { CancelOrRescheduleBookingByUserUseCase } from "../../useCases/users/bookings/cancelOrRescheduleBookingUseCase";
 import { FindBookingsOfUserUseCase } from "../../useCases/users/bookings/findBookingsOfUserUseCase";
 import { BookSlotUseCase } from "../../useCases/users/slotOperations/bookSlotUseCase";
 import { FindDetailsOfASlotUseCase } from "../../useCases/users/slotOperations/findDetailsOfASlot";
+import { FindSlotsOfDoctorInUserSde } from "../../useCases/users/slotOperations/findSlotsOfADoctorUseCase";
 import { FindSlotsUseCase } from "../../useCases/users/slotOperations/findSlotsUseCase";
 import { SignupUseCase } from "../../useCases/users/userAuthentication/signupUserUseCase";
 import { UserLoginUseCase } from "../../useCases/users/userAuthentication/userLoginUseCase";
@@ -60,3 +63,8 @@ export const injectedFindSlotDetailsController = new FindSlotDetailsController(f
 //--------------------------------------------------- find the bookings of the user----------------
 const findBookingsOfUserUseCase = new FindBookingsOfUserUseCase(bookingRepository)
 export const injectedFindBookingsOfUserController = new FindBookingsOfUserController(findBookingsOfUserUseCase)
+
+//------------------------------------------------canceld and reschedule the booking in the user side ----------------------
+const cancelOrRescheduleBookingByUserUseCase = new CancelOrRescheduleBookingByUserUseCase(bookingRepository, slotRepository)
+const findSlotsOfDoctorByUseUseCase = new FindSlotsOfDoctorInUserSde(slotRepository)
+export const injectedCancelOrRescheduleBookingController = new CancelOrRescheduleBookingByUserController(cancelOrRescheduleBookingByUserUseCase, findSlotsOfDoctorByUseUseCase)

@@ -18,7 +18,6 @@ export class SlotRepository implements IslotRepository {
         })
     }
     async findSlotsOfADoctor(doctorId: string, page: number, limit: number): Promise<{ slots: SlotEntity[]; totalPages: number; }> {
-        console.log("inside")
         const skip = (page - 1) * limit
         const [slots, totalCount] = await Promise.all([
             slotModel.find({ doctorId }).skip(skip).limit(limit),
@@ -117,14 +116,14 @@ export class SlotRepository implements IslotRepository {
 
         return doc?.timings?.[0]?.status || null;
     }
-    async findSlotAndUpdateStatus(slotId: string, timingId: string): Promise<boolean> {
+    async findSlotAndUpdateStatus(slotId: string, timingId: string, status: string): Promise<boolean> {
         const filter = {
             _id: slotId,
             "timings._id": timingId
         }
         const result = await slotModel.updateOne(
             filter,
-            { $set: { "timings.$.status": "booked" } }
+            { $set: { "timings.$.status": status } }
         );
         return result.modifiedCount === 1
     }

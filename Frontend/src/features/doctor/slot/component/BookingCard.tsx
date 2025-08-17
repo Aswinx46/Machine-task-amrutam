@@ -13,15 +13,14 @@ import { Button } from "@/components/ui/button";
 interface BookingCardProps {
   doctorbooking?: PopulatedBookingForDoctor;
   userBookings?: PopulatedBookingForUser;
-  cancelBooking?: (bookingId: string) => void
-  rescheduleBooking?: (bookingId: string) => void
+  cancelBooking?: (bookingId: string, doctorId: string) => void
+  rescheduleBooking?: (bookingId: string, doctorId: string) => void
 }
 
 export const BookingCard = ({ doctorbooking, userBookings, cancelBooking, rescheduleBooking }: BookingCardProps) => {
   if (!doctorbooking && !userBookings) {
     return <h1>No Bookings found</h1>;
   }
-  console.log('this is the data inside the component', userBookings)
 
   // normalize booking data
   const booking = doctorbooking || userBookings!;
@@ -104,8 +103,8 @@ export const BookingCard = ({ doctorbooking, userBookings, cancelBooking, resche
         )}
       </div>
       {userBookings && cancelBooking && rescheduleBooking && <div className="flex  justify-between">
-        <Button onClick={() => cancelBooking(booking._id!)}>Cancel Booking</Button>
-        <Button onClick={() => rescheduleBooking(booking._id!)}>Reschedule Booking</Button>
+        {booking.status !== 'cancelled' && <Button onClick={() => cancelBooking(booking._id!, booking.doctorId._id)}>Cancel Booking</Button>}
+        {booking.status !== 'reschedule' &&<Button onClick={() => rescheduleBooking(booking._id!, booking.doctorId._id)}>Reschedule Booking</Button>}
       </div>}
     </Card>
   );

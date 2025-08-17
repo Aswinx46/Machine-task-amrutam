@@ -7,11 +7,13 @@ export interface BookingEntity {
     date: Date;
     startTime: Date
     endTime: Date;
-    status: "available" | "booked" | "expired" |"cancelled"
+    status: "available" | "booked" | "expired" | "cancelled"
     recurring: boolean
     slotId: ObjectId | string
     userId: ObjectId | string
     timingId: ObjectId | string
-    mode:"online" | "in-person"
+    mode: "online" | "in-person"
 }
 
+
+export type BookingStatus = "booked" | "expired" | "completed" | "cancelled"

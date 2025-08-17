@@ -47,7 +47,7 @@ export interface BookingEntity {
     date: Date;
     startTime: Date
     endTime: Date;
-    status: "booked" | "expired" | "completed" | "cancelled" | ''
+    status: "booked" | "expired" | "completed" | "cancelled" | 'reschedule' | ''
     mode: "online" | "in-person"
     recurring: boolean
     slotId: string
@@ -55,7 +55,8 @@ export interface BookingEntity {
     timingId: string
 }
 
-export type BookingStatus = "booked" | "expired" | "completed" | "cancelled" | '';
+export type BookingStatus = "booked" | "expired" | "completed" | "cancelled" | 'reschedule' | '';
+
 
 export interface PopulatedBookingForDoctor extends Omit<BookingEntity, "userId"> {
     userId: {

@@ -24,7 +24,6 @@ export class BookSlotUseCase implements IBookSlotUseCase {
 
     async verifyOtpAndCreateBooking(data: BookingEntity, otp: string, email: string): Promise<void> {
         const key = `lock:slot:${data.slotId}:timing:${data.timingId}`
-        console.log('this is the otp',otp)
         const verifyOtp = await this._otpService.verifyOtp(email, otp)
         if (!verifyOtp) throw new Error("Invalid OTP")
         const userId = await this._redisService.get(key)
@@ -34,7 +33,7 @@ export class BookSlotUseCase implements IBookSlotUseCase {
         if (slotStatus !== 'active') throw new Error("Slot is not Active now")
         const createBooking = await this._bookingRepository.createBooking(data)
         if (!createBooking) throw new Error("Error while creating booking")
-        const changeStatusOfSlot = await this._slotRepository.findSlotAndUpdateStatus(data.slotId.toString(), data.timingId.toString())
+        const changeStatusOfSlot = await this._slotRepository.findSlotAndUpdateStatus(data.slotId.toString(), data.timingId.toString(),'booked')
         if (!changeStatusOfSlot) throw new Error("No slot found for changing the status")
         if (createBooking && changeStatusOfSlot) await this._redisService.del(key)
     } // verifyting the otp and creating the booking and changing the status of the slot into booked

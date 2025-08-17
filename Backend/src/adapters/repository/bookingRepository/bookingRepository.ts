@@ -1,6 +1,6 @@
 import mongoose, { ObjectId } from "mongoose";
 import { PopulatedBooking, PopulatedBookingForDoctorDTO } from "../../../domain/entity/doctor/bookingDTO";
-import { BookingEntity } from "../../../domain/entity/doctor/bookingEntity";
+import { BookingEntity, BookingStatus } from "../../../domain/entity/doctor/bookingEntity";
 import { IbookingRepositoryInterface } from "../../../domain/interface/repositoryInterfaces/bookingRepositoryInterface";
 import { bookingModel } from "../../../framework/database/models/bookingModel";
 
@@ -30,5 +30,11 @@ export class BookingRepository implements IbookingRepositoryInterface {
         ])
         const totalPages = Math.ceil(totalCount / limit)
         return { bookings, totalPages }
+    }
+    async cancelOrRescheduleBookingFromUserSide(bookingId: string, status: BookingStatus): Promise<PopulatedBooking | null> {
+        return await bookingModel.findByIdAndUpdate(bookingId, { status }, { new: true }).populate({ path: "doctorId", select: '-password -__v -updatedAt -createdAt' }).lean<PopulatedBooking>()
+    }
+    async findBookingById(bookingId: string): Promise<BookingEntity | null> {
+        return await bookingModel.findById(bookingId)
     }
 }
