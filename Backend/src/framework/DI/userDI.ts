@@ -2,6 +2,7 @@ import { RefreshTokenController } from "../../adapters/controllers/authenticatio
 import { SendOtpController } from "../../adapters/controllers/authentication/sendOtpAndRefreshToken/sendOtpController";
 import { UserLoginController } from "../../adapters/controllers/authentication/userAuthentication/login/userLoginController";
 import { SignupController } from "../../adapters/controllers/authentication/userAuthentication/signup/SignupController";
+import { FindBookingsOfUserController } from "../../adapters/controllers/user/bookings/findBookingsOfUserController";
 import { FindSlotDetailsController } from "../../adapters/controllers/user/slot/findSlotDetailsController";
 import { FindSlotsController } from "../../adapters/controllers/user/slot/findSlotsController";
 import { BookSlotController } from "../../adapters/controllers/user/slot/slotCreationController";
@@ -10,6 +11,7 @@ import { BookingRepository } from "../../adapters/repository/bookingRepository/b
 import { DoctorRepository } from "../../adapters/repository/doctorRepository/doctorRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
 import { SendOtpUseCase } from "../../useCases/Authentication/sendOtpUseCase";
+import { FindBookingsOfUserUseCase } from "../../useCases/users/bookings/findBookingsOfUserUseCase";
 import { BookSlotUseCase } from "../../useCases/users/slotOperations/bookSlotUseCase";
 import { FindDetailsOfASlotUseCase } from "../../useCases/users/slotOperations/findDetailsOfASlot";
 import { FindSlotsUseCase } from "../../useCases/users/slotOperations/findSlotsUseCase";
@@ -54,3 +56,7 @@ export const injectedBookSlotController = new BookSlotController(bookSlotUseCase
 //------------------------------------------------find slot details --------------
 const findSlotDetailsUseCase = new FindDetailsOfASlotUseCase(slotRepository)
 export const injectedFindSlotDetailsController = new FindSlotDetailsController(findSlotDetailsUseCase)
+
+//--------------------------------------------------- find the bookings of the user----------------
+const findBookingsOfUserUseCase = new FindBookingsOfUserUseCase(bookingRepository)
+export const injectedFindBookingsOfUserController = new FindBookingsOfUserController(findBookingsOfUserUseCase)

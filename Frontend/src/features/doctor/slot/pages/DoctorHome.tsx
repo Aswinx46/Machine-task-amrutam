@@ -12,6 +12,7 @@ import type { RootState } from "@/reduxstrore/store";
 import { checkDateConflict } from "../utils/checkDateConflict";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import Pagination from "@/components/Pagination";
 
 
 
@@ -25,11 +26,9 @@ const DoctorHomePage = () => {
     useEffect(() => {
         setBookings(findBookings.data?.bookings)
     }, [findBookings.data])
-    console.log('this is the booking dta', findBookings.data)
     const doctor = useSelector((state: RootState) => state.doctor.doctor)
     const navigate = useNavigate()
     if (!doctor) return
-
 
     const stats = {
         todayBookings: bookings?.length,
@@ -46,9 +45,7 @@ const DoctorHomePage = () => {
             return
         }
         createSlotMutation.mutate(slot, {
-            onSuccess: (data) => {
-                // setBookings((prev)=>[...prev,data.createdSlot])
-                console.log('this is the data after creating the slot', data)
+            onSuccess: () => {
                 toast('Slot Created')
             },
             onError: (err) => {
@@ -73,7 +70,7 @@ const DoctorHomePage = () => {
                     <BookingFilters
                         activeFilter={activeFilter}
                         onFilterChange={setActiveFilter}
-                        
+
                     />
                     <Button onClick={() => navigate('/doctor/slot')}>Show Slots</Button>
                 </div>
@@ -100,6 +97,7 @@ const DoctorHomePage = () => {
                     doctorId="doc1"
                 />
             </div>
+            {findBookings.data?.totalPages && <Pagination current={page} setPage={setPage} total={findBookings.data?.totalPages} />}
         </div>
     );
 };

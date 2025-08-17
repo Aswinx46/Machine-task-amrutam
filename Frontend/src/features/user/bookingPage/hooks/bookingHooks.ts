@@ -1,5 +1,5 @@
-import { useMutation } from "@tanstack/react-query"
-import { findDetailsOfSlot, sendOtpAndLockSlot, verifyOtpAndCreateBooking } from "../services/bookingService"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { findBookingsOfuser, findDetailsOfSlot, sendOtpAndLockSlot, verifyOtpAndCreateBooking } from "../services/bookingService"
 import type { BookingEntity } from "@/types/appointment/appointment"
 
 export const useFindSlotDetails = () => {
@@ -17,5 +17,12 @@ export const useSendOtpAndLockSlot = () => {
 export const useVerifyOtpAndCreateBooking = () => {
     return useMutation({
         mutationFn: ({ data, otp, email }: { data: BookingEntity, otp: string, email: string }) => verifyOtpAndCreateBooking(data, otp, email)
+    })
+}
+
+export const useFindBookingsOfUser = (page: number, filter?: string) => {
+    return useQuery({
+        queryKey: ['bookingsOfUser', page, filter],
+        queryFn: () => findBookingsOfuser(page, filter)
     })
 }

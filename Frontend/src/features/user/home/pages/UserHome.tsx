@@ -211,7 +211,6 @@ export function UserHomePage() {
                       </div>
                     </div>
                   </div>
-
                   {/* Duration */}
                   <div className="space-y-3">
                     <Label className="text-sm font-medium">Duration</Label>
@@ -267,6 +266,8 @@ export function UserHomePage() {
                     </CardContent>
                   </Card>
                 )}
+              <Button onClick={() => navigate('/bookings')}>SHOW BOOKINGS</Button>
+
             </div>
           </div>
 

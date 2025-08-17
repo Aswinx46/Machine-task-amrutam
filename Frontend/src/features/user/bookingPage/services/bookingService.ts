@@ -14,3 +14,9 @@ export const verifyOtpAndCreateBooking = async (data: BookingEntity, otp: string
     const response = await axios.post('/slots/otp/verify', { data, otp, email })
     return response.data
 }
+
+export const findBookingsOfuser = async (page: number, filter?: string) => {
+    const limit = import.meta.env.VITE_PAGE_LIMIT
+    const response = await axios.get('/bookings', { params: { page, limit, filter } })
+    return response.data
+}

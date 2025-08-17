@@ -25,12 +25,7 @@ const SlotBookingComponent: React.FC<SlotBookingProps> = ({
 
   const handleBookSlot = async () => {
     if (timing.isBooked || timing.status !== 'active') return;
-
     setIsBooking(true);
-
-    // Simulate booking API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
     onBook(slot._id || '', timing);
     setIsBooking(false);
   };

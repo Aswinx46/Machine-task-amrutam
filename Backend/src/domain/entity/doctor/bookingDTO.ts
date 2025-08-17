@@ -4,7 +4,7 @@ import { DoctorEntity } from "./doctorEntity";
 
 export interface BookingDTO extends Omit<BookingEntity, '_v' | 'createdAt' | 'updatedAt'> { }
 
-export interface populatedBookingDTO extends Omit<BookingEntity, "doctorId" | "timingId" | "slotId" | "_v" | "createdAt" | "updatedAt"> {
+export interface PopulatedBookingDTO extends Omit<BookingEntity, "doctorId" | "timingId" | "slotId" | "_v" | "createdAt" | "updatedAt" | 'recurring' | 'ruleId'> {
     doctorId: {
         _id: string | ObjectId,
         name: string,
@@ -15,15 +15,6 @@ export interface populatedBookingDTO extends Omit<BookingEntity, "doctorId" | "t
 
 export interface PopulatedBooking extends Omit<BookingEntity, "doctorId" | "timingId"> {
     doctorId: DoctorEntity,
-    timingId: {
-        startTime: Date,
-        endTime: Date,
-        consultationDuration: number,
-        price: number,
-        mode: "online" | "inperson",
-        status: "available" | "booked" | "expired",
-        _id: ObjectId | string
-    }
 }
 
 export interface PopulatedBookingForDoctorDTO extends Omit<BookingEntity, "userId"> {

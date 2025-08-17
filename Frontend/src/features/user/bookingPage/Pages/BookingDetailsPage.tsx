@@ -53,7 +53,6 @@ const ExampleUsage: React.FC = () => {
     }
     const handleBooking = (slotId: string, timingDetails: IavailabilityTime) => {
         if (!slot) return
-        console.log('this s the slot', slot)
         const bookingDetails: BookingEntity = {
             date: slot?.date,
             doctorId: slot?.doctorId._id,
