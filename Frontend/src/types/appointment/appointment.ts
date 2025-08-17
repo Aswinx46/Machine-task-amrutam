@@ -1,7 +1,7 @@
 
 
 export interface IavailabilityTime {
-    _id?:string
+    _id?: string
     startTime: Date;
     endTime: Date;
     isBooked: boolean;
@@ -41,41 +41,45 @@ export interface SlotEntity {
 }
 
 export interface BookingEntity {
-    _id?:  string;
-    doctorId:  string;
-    ruleId?:  string;
+    _id?: string;
+    doctorId: string;
+    ruleId?: string;
     date: Date;
     startTime: Date
     endTime: Date;
-    status: "available" | "booked" | "expired"
-    consultationType:"online" | "in-person"
+    status:  "booked" | "expired" | "completed" | "cancelled"
+    mode: "online" | "in-person"
     recurring: boolean
     slotId: string
     userId: string
-    timingId:  string
+    timingId: string
 }
 
-export type BookingStatus = "booked" | "completed" | "cancelled";
-export type FilterStatus = "all" | BookingStatus;
+export type BookingStatus = "booked" | "completed" | "cancelled" | '';
 
-// Extended booking interface for dashboard display
-export interface DashboardBooking extends Omit<BookingEntity, "status"> {
-    _id: string;
-    status: BookingStatus;
-    patientName: string;
-    patientEmail?: string;
-    patientPhone?: string;
-    consultationType: "online" | "in-person"
-}
+export interface PopulatedBookingForDoctor extends Omit<BookingEntity, "userId"> {
+    userId: {
+        _id: string,
+        name: string,
+        email: string
+   }
+} 
 
 export interface Doctor {
     _id: string;
     name: string;
     specialization: string[];
-    bio:string;
-    phone:string;
-    address:string
-  }
-export interface SlotWithDoctorDetailsEntity extends Omit<SlotEntity,"doctorId"> {
-    doctorId:Doctor
+    bio: string;
+    phone: string;
+    address: string
+}
+export interface PopulatedBookingForUser extends Omit<BookingEntity, "doctorId"> {
+    doctorId: Doctor
+}
+// Extended booking interface for dashboard display
+
+
+
+export interface SlotWithDoctorDetailsEntity extends Omit<SlotEntity, "doctorId"> {
+    doctorId: Doctor
 }

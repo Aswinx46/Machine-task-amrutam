@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedCreateSlotController, injectedDoctorLoginController, injectedDoctorSignUpController, injectedFindSlotsOfADoctor } from "../../DI/doctorDI";
+import { injectedCreateSlotController, injectedDoctorLoginController, injectedDoctorSignUpController, injectedFindBookingsOfDoctorController, injectedFindSlotsOfADoctor } from "../../DI/doctorDI";
 import { injectedSendOtpController } from "../../DI/userDI";
 import { roleBasedAuthenticationMiddleware } from "../../../adapters/middlewares/roleBasedAuthentication/roleBasedAuthenticationMiddleware";
 import { injectedTokenBlacklistCheckingMiddleware, injectedTokenExpiryValidationMiddleware } from "../../DI/middlewareAndRefreshTokenDI";
@@ -24,6 +24,9 @@ export class DoctorRoute {
             injectedCreateSlotController.handleCreateSlot(req, res)
         }).get(injectedTokenExpiryValidationMiddleware, injectedTokenBlacklistCheckingMiddleware, roleBasedAuthenticationMiddleware('doctor'), (req: Request, res: Response) => {
             injectedFindSlotsOfADoctor.execute(req, res)
+        })
+        this.DoctorRouter.get('/bookings', injectedTokenExpiryValidationMiddleware, injectedTokenBlacklistCheckingMiddleware, roleBasedAuthenticationMiddleware('doctor'), (req: Request, res: Response) => {
+            injectedFindBookingsOfDoctorController.handleFindBookingOfDoctor(req, res)
         })
     }
 }

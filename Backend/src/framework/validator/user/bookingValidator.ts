@@ -13,5 +13,6 @@ export const bookingDataValidator = z.object({
     recurring: z.boolean(),
     slotId: z.string().min(1, "slotId is required"),
     userId: z.string().min(1, "userId is required"),
+    mode:z.enum(['online','in-person']),
     timingId: z.string().min(1, "timingId is required"),
 });

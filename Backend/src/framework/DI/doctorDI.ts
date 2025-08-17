@@ -1,11 +1,14 @@
 import { DoctorLoginController } from "../../adapters/controllers/authentication/doctorAuthentication/loginDoctorController";
 import { SignupDoctorController } from "../../adapters/controllers/authentication/doctorAuthentication/signUpDoctorController";
+import { FindBookingsOfDoctorController } from "../../adapters/controllers/doctor/bookings/findBookingsOfDoctorController";
 import { FindSlotsOfADoctorController } from "../../adapters/controllers/doctor/slot/findSlotsOfADoctorController";
 import { createSlotController } from "../../adapters/controllers/doctor/slot/slotCreationController";
 import { SlotRepository } from "../../adapters/repository/availabilityRepository/slorRepository";
+import { BookingRepository } from "../../adapters/repository/bookingRepository/bookingRepository";
 import { DoctorRepository } from "../../adapters/repository/doctorRepository/doctorRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
 import { SendOtpUseCase } from "../../useCases/Authentication/sendOtpUseCase";
+import { FindBookingForDoctorUseCase } from "../../useCases/doctors/bookings/findBookingsForDoctorUseCase";
 import { DoctorLoginUseCase } from "../../useCases/doctors/doctorAuthentication/loginDoctorUseCase";
 import { DoctorSignupUseCase } from "../../useCases/doctors/doctorAuthentication/signupUseCase";
 import { FindSlotsOfADoctorUseCase } from "../../useCases/doctors/slot/findSlotsOfADoctorUseCase";
@@ -38,3 +41,8 @@ export const injectedCreateSlotController = new createSlotController(createSlotU
 //--------------------------------------------------Doctor slots fetching--------------------------
 const findSlotsOfADoctorUseCase = new FindSlotsOfADoctorUseCase(slotRepository)
 export const injectedFindSlotsOfADoctor = new FindSlotsOfADoctorController(findSlotsOfADoctorUseCase)
+
+//---------------------------------------------------find the bookings of the doctor----------------
+const bookingRepository = new BookingRepository()
+const findBookingsOfDoctorUseCase = new FindBookingForDoctorUseCase(bookingRepository)
+export const injectedFindBookingsOfDoctorController = new FindBookingsOfDoctorController(findBookingsOfDoctorUseCase)

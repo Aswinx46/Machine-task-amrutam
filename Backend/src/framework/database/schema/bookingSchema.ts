@@ -32,7 +32,7 @@ export const bookingSchema = new Schema<BookingEntity>({
     },
     status: {
         type: String,
-        enum: ['available', 'booked', 'expired']
+        enum: ['available', 'booked', 'expired','cancelled']
     },
     slotId: {
         type: Schema.Types.ObjectId,
@@ -45,7 +45,12 @@ export const bookingSchema = new Schema<BookingEntity>({
         required: true
     },
     timingId: {
-        type:String,
+        type: String,
+        required: true
+    },
+    mode: {
+        type: String,
+        enum: ['online', 'in-person'],
         required:true
     }
 }, {

@@ -61,7 +61,7 @@ const ExampleUsage: React.FC = () => {
             recurring: false,
             startTime: timingDetails.startTime,
             status: 'booked',
-            consultationType: timingDetails.mode,
+            mode: timingDetails.mode,
             slotId,
             timingId: timingDetails._id!,
             userId: user._id!,
