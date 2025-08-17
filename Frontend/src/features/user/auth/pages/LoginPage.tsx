@@ -21,6 +21,7 @@ const Login: React.FC = () => {
                 dispatch(addUser(data.user))
                 dispatch(addToken(data.accessToken))
                 toast("Login SuccessFull")
+                localStorage.setItem('userId', data.user._id)
                 navigate('/home', { replace: true })
             },
             onError: (err) => {
@@ -74,7 +75,7 @@ const Login: React.FC = () => {
                     <LoginForm onSubmit={handleLogin} isLoading={userLoginMutation.isPending} />
                 </div>
 
-              
+
             </motion.div>
         </div>
     );

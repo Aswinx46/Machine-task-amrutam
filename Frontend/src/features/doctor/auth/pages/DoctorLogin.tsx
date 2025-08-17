@@ -20,6 +20,7 @@ const DoctorLogin = () => {
         dispatch(addDoctor(data.doctor))
         dispatch(addToken(data.accessToken))
         localStorage.setItem('role', data.doctor.role)
+        localStorage.setItem('doctorId', data.doctor._id)
         navigate('/doctor/home', { replace: true })
       },
       onError: (err) => {
