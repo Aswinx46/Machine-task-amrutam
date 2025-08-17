@@ -10,9 +10,10 @@ interface DoctorHeaderProps {
     totalSlots: number;
     completedToday: number;
   };
+  handleLogout: () => void
 }
 
-export const DoctorHeader = ({ doctorName, onCreateSlot, stats }: DoctorHeaderProps) => {
+export const DoctorHeader = ({ doctorName, onCreateSlot, stats, handleLogout }: DoctorHeaderProps) => {
   return (
     <div className="bg-white border border-border rounded-lg p-6 mb-6 shadow-soft">
       <div className="flex justify-between items-start mb-6">
@@ -20,15 +21,18 @@ export const DoctorHeader = ({ doctorName, onCreateSlot, stats }: DoctorHeaderPr
           <h1 className="text-3xl font-bold mb-2 text-foreground">Welcome back, Dr. {doctorName}</h1>
           <p className="text-muted-foreground">Manage your appointments and availability</p>
         </div>
-        <Button 
-          onClick={onCreateSlot}
-          className="bg-primary text-primary-foreground hover:bg-primary-dark"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Create New Slot
-        </Button>
+        <div className="flex flex-col gap-5">
+          <Button
+            onClick={onCreateSlot}
+            className="bg-primary text-primary-foreground hover:bg-primary-dark"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Create New Slot
+          </Button>
+          <Button onClick={handleLogout}>LOGOUT</Button>
+        </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="bg-primary-light border-primary/20 p-4">
           <div className="flex items-center space-x-3">
@@ -39,7 +43,7 @@ export const DoctorHeader = ({ doctorName, onCreateSlot, stats }: DoctorHeaderPr
             </div>
           </div>
         </Card>
-        
+
         <Card className="bg-secondary border-border p-4">
           <div className="flex items-center space-x-3">
             <Clock className="w-8 h-8 text-primary" />
@@ -49,7 +53,7 @@ export const DoctorHeader = ({ doctorName, onCreateSlot, stats }: DoctorHeaderPr
             </div>
           </div>
         </Card>
-        
+
         <Card className="bg-success-light border-success/20 p-4">
           <div className="flex items-center space-x-3">
             <Users className="w-8 h-8 text-success" />

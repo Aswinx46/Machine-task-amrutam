@@ -1,5 +1,6 @@
 import { RefreshTokenController } from "../../adapters/controllers/authentication/sendOtpAndRefreshToken/refreshTokenController";
 import { SendOtpController } from "../../adapters/controllers/authentication/sendOtpAndRefreshToken/sendOtpController";
+import { UserLogoutController } from "../../adapters/controllers/authentication/sendOtpAndRefreshToken/userLogoutController";
 import { UserLoginController } from "../../adapters/controllers/authentication/userAuthentication/login/userLoginController";
 import { SignupController } from "../../adapters/controllers/authentication/userAuthentication/signup/SignupController";
 import { CancelOrRescheduleBookingByUserController } from "../../adapters/controllers/user/bookings/cancelOrRescheduleBookingByUserController";
@@ -12,6 +13,7 @@ import { BookingRepository } from "../../adapters/repository/bookingRepository/b
 import { DoctorRepository } from "../../adapters/repository/doctorRepository/doctorRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
 import { SendOtpUseCase } from "../../useCases/Authentication/sendOtpUseCase";
+import { UserLogoutUseCase } from "../../useCases/Authentication/userLogoutUseCase";
 import { CancelOrRescheduleBookingByUserUseCase } from "../../useCases/users/bookings/cancelOrRescheduleBookingUseCase";
 import { FindBookingsOfUserUseCase } from "../../useCases/users/bookings/findBookingsOfUserUseCase";
 import { BookSlotUseCase } from "../../useCases/users/slotOperations/bookSlotUseCase";
@@ -68,3 +70,7 @@ export const injectedFindBookingsOfUserController = new FindBookingsOfUserContro
 const cancelOrRescheduleBookingByUserUseCase = new CancelOrRescheduleBookingByUserUseCase(bookingRepository, slotRepository)
 const findSlotsOfDoctorByUseUseCase = new FindSlotsOfDoctorInUserSde(slotRepository)
 export const injectedCancelOrRescheduleBookingController = new CancelOrRescheduleBookingByUserController(cancelOrRescheduleBookingByUserUseCase, findSlotsOfDoctorByUseUseCase)
+
+//-------------------------------------------------- userLogout -------------------------------------------
+const userLogoutUseCase = new UserLogoutUseCase(jwtService, redisService)
+export const injectedUserLogoutController = new UserLogoutController(userLogoutUseCase)

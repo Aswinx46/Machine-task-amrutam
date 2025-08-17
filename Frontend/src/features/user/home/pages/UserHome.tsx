@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Search, Filter, SlidersHorizontal } from "lucide-react"
+import { Search, Filter } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,12 +7,16 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
-import { useFindSlots } from "../hooks/userHomeHooks"
+import { useFindSlots, useUserLogout } from "../hooks/userHomeHooks"
 import Pagination from "@/components/Pagination"
 import SlotCard from "@/components/slots/SlotCard"
 import type { IavailabilityTime } from "@/types/appointment/appointment"
 import { useNavigate } from "react-router-dom"
 import useDebounce from "../hooks/debounceHook"
+import { toast } from "sonner"
+import { useDispatch } from "react-redux"
+import { removeUser } from "@/reduxstrore/slices/userSlice"
+import { removeToken } from "@/reduxstrore/slices/tokenSlice"
 
 interface FilterState {
   online: boolean
@@ -22,19 +26,9 @@ interface FilterState {
   duration: string
 }
 
-interface SortOption {
-  value: string
-  label: string
-}
 
-const sortOptions: SortOption[] = [
-  { value: "relevance", label: "Most Relevant" },
-  { value: "price-low", label: "Price: Low to High" },
-  { value: "price-high", label: "Price: High to Low" },
-  { value: "duration", label: "Duration" },
-  { value: "newest", label: "Newest First" },
-  { value: "rating", label: "Highest Rated" },
-]
+
+
 
 const durationOptions = [
   { value: "any", label: "Any Duration" },
@@ -47,11 +41,11 @@ const durationOptions = [
 export function UserHomePage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [showSearchQuery, setShowSearchQuery] = useState('')
-  const [sortBy, setSortBy] = useState("relevance")
   const [page, setPage] = useState<number>(1)
   const [mode, setMode] = useState<string | null>(null)
   const [duration, setDuration] = useState<number | null>(null)
   const limit = import.meta.env.VITE_PAGE_LIMIT
+  const logoutMutation = useUserLogout()
   const [filters, setFilters] = useState<FilterState>({
     online: false,
     inperson: false,
@@ -65,7 +59,21 @@ export function UserHomePage() {
     setSearchQuery(value)
   }
   const debounce = useDebounce(handleSearch, 3000)
-
+  const dispatch = useDispatch()
+  const handleLogout = () => {
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        dispatch(removeUser(null))
+        dispatch(removeToken(null))
+        localStorage.removeItem('userId')
+        toast("Logout Successfully")
+        navigate('/login', { replace: true })
+      },
+      onError: (err) => {
+        toast(err.message)
+      }
+    })
+  }
 
   const handleBookSlot = (_slot: IavailabilityTime, slotId: string, timingId: string, doctorId: string) => {
     navigate(`/bookingDetails/${slotId}/${doctorId}/${timingId}`)
@@ -128,29 +136,8 @@ export function UserHomePage() {
           {/* Left Sidebar - Filters and Sorting */}
           <div className="w-80 flex-shrink-0">
             <div className="space-y-6">
-              {/* Sorting Section */}
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <SlidersHorizontal className="h-5 w-5" />
-                    Sort By
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select sorting option" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {sortOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </CardContent>
-              </Card>
+
+
 
               {/* Filters Section */}
               <Card>
@@ -272,9 +259,9 @@ export function UserHomePage() {
                     </CardContent>
                   </Card>
                 )}
-              <Button onClick={() => navigate('/bookings')}>SHOW BOOKINGS</Button>
-
+              <Button className="mb-5" onClick={() => navigate('/bookings')}>SHOW BOOKINGS</Button>
             </div>
+            <Button onClick={handleLogout}>LOGOUT</Button>
           </div>
 
           {/* Main Content Area - Left Empty for Future Content */}

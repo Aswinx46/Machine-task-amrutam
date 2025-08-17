@@ -4,3 +4,7 @@ export const findSlots = async (page: number, limit: number, searchQuery?: strin
     const response = await axios.get('/slots', { params: { page, limit, searchQuery, mode, minPrice, maxPrice, duration } })
     return response.data
 }
+export const userLogout = async () => {
+    const response = await axios.post('/logout')
+    return response.data
+}

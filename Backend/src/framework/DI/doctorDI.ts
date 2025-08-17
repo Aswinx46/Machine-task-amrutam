@@ -1,5 +1,6 @@
 import { DoctorLoginController } from "../../adapters/controllers/authentication/doctorAuthentication/loginDoctorController";
 import { SignupDoctorController } from "../../adapters/controllers/authentication/doctorAuthentication/signUpDoctorController";
+import { UserLogoutController } from "../../adapters/controllers/authentication/sendOtpAndRefreshToken/userLogoutController";
 import { FindBookingsOfDoctorController } from "../../adapters/controllers/doctor/bookings/findBookingsOfDoctorController";
 import { FindSlotsOfADoctorController } from "../../adapters/controllers/doctor/slot/findSlotsOfADoctorController";
 import { createSlotController } from "../../adapters/controllers/doctor/slot/slotCreationController";
@@ -8,6 +9,7 @@ import { BookingRepository } from "../../adapters/repository/bookingRepository/b
 import { DoctorRepository } from "../../adapters/repository/doctorRepository/doctorRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
 import { SendOtpUseCase } from "../../useCases/Authentication/sendOtpUseCase";
+import { UserLogoutUseCase } from "../../useCases/Authentication/userLogoutUseCase";
 import { FindBookingForDoctorUseCase } from "../../useCases/doctors/bookings/findBookingsForDoctorUseCase";
 import { DoctorLoginUseCase } from "../../useCases/doctors/doctorAuthentication/loginDoctorUseCase";
 import { DoctorSignupUseCase } from "../../useCases/doctors/doctorAuthentication/signupUseCase";
@@ -17,6 +19,7 @@ import { EmailService } from "../services/emailService";
 import { HashPassword } from "../services/hashPassword";
 import { JwtService } from "../services/jwtService";
 import { OtpService } from "../services/otpService";
+import { RedisService } from "../services/redisService";
 
 //-------------------------------------------------------Doctor Signup-----------------------------------------
 const doctorRepository = new DoctorRepository()
@@ -46,3 +49,8 @@ export const injectedFindSlotsOfADoctor = new FindSlotsOfADoctorController(findS
 const bookingRepository = new BookingRepository()
 const findBookingsOfDoctorUseCase = new FindBookingForDoctorUseCase(bookingRepository)
 export const injectedFindBookingsOfDoctorController = new FindBookingsOfDoctorController(findBookingsOfDoctorUseCase)
+
+//----------------------------------------------doctor logout------------------------
+const redisService = new RedisService()
+const userLogoutUseCase = new UserLogoutUseCase(jwtService, redisService)
+export const injectedDoctorLogoutController = new UserLogoutController(userLogoutUseCase)

@@ -6,13 +6,15 @@ import { BookingFilters } from "../component/BookingFilters";
 import { BookingCard } from "../component/BookingCard";
 import { CreateSlotModal } from "../component/CreateSlotModal";
 import { toast } from "sonner";
-import { useCreateSlot, useFindBookingOfDoctor } from "../hooks/slotHook";
-import { useSelector } from "react-redux";
+import { useCreateSlot, useDoctorLogout, useFindBookingOfDoctor } from "../hooks/slotHook";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/reduxstrore/store";
 import { checkDateConflict } from "../utils/checkDateConflict";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Pagination from "@/components/Pagination";
+import { removeDoctor } from "@/reduxstrore/slices/doctorSlice";
+import { removeToken } from "@/reduxstrore/slices/tokenSlice";
 
 
 
@@ -23,11 +25,13 @@ const DoctorHomePage = () => {
     const createSlotMutation = useCreateSlot()
     const [page, setPage] = useState<number>(1)
     const findBookings = useFindBookingOfDoctor(page, activeFilter)
+    const logoutMutation = useDoctorLogout()
     useEffect(() => {
         setBookings(findBookings.data?.bookings)
     }, [findBookings.data])
     const doctor = useSelector((state: RootState) => state.doctor.doctor)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     if (!doctor) return
 
     const stats = {
@@ -56,6 +60,22 @@ const DoctorHomePage = () => {
 
     };
 
+    const handleLogout = () => {
+        logoutMutation.mutate(undefined, {
+            onSuccess: () => {
+                localStorage.removeItem('doctorId')
+                localStorage.removeItem('role')
+                dispatch(removeDoctor(null))
+                dispatch(removeToken(null))
+                toast('Logout Successfull')
+                navigate('/doctor/login', { replace: true })
+            },
+            onError: (err) => {
+                toast(err.message)
+            }
+        })
+    }
+
     return (
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-6">
@@ -63,6 +83,7 @@ const DoctorHomePage = () => {
                     doctorName={doctor.name}
                     onCreateSlot={() => setIsCreateSlotModalOpen(true)}
                     stats={stats}
+                    handleLogout={handleLogout}
                 />
 
                 <div className="mb-6 flex justify-between">
@@ -70,7 +91,6 @@ const DoctorHomePage = () => {
                     <BookingFilters
                         activeFilter={activeFilter}
                         onFilterChange={setActiveFilter}
-
                     />
                     <Button onClick={() => navigate('/doctor/slot')}>Show Slots</Button>
                 </div>

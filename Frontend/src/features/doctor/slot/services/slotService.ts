@@ -16,3 +16,8 @@ export const findBookingsOfDoctor = async (page: number, filter?: string) => {
     const response = await axios.get('/bookings', { params: { page, limit, filter } })
     return response.data
 }
+
+export const doctorLogout = async () => {
+    const response = await axios.post('/logout')
+    return response.data
+}

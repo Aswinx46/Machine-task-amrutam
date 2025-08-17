@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedBookSlotController, injectedCancelOrRescheduleBookingController, injectedFindBookingsOfUserController, injectedFindSlotDetailsController, injectedFindSlotsController, injectedSendOtpController, injectedSignupController, injectedUserLoginController } from "../../DI/userDI";
+import { injectedBookSlotController, injectedCancelOrRescheduleBookingController, injectedFindBookingsOfUserController, injectedFindSlotDetailsController, injectedFindSlotsController, injectedSendOtpController, injectedSignupController, injectedUserLoginController, injectedUserLogoutController } from "../../DI/userDI";
 import { injectedRefreshTokenController, injectedTokenBlacklistCheckingMiddleware, injectedTokenExpiryValidationMiddleware } from "../../DI/middlewareAndRefreshTokenDI";
 
 export class UserRoute {
@@ -38,7 +38,9 @@ export class UserRoute {
         })
         this.userRoute.patch('/bookings/:bookingId/:doctorId', injectedTokenExpiryValidationMiddleware, injectedTokenBlacklistCheckingMiddleware, (req: Request, res: Response) => {
             injectedCancelOrRescheduleBookingController.execute(req, res)
-
+        })
+        this.userRoute.post('/logout', injectedTokenExpiryValidationMiddleware, injectedTokenBlacklistCheckingMiddleware, (req: Request, res: Response) => {
+            injectedUserLogoutController.handleUserLogoutUseCase(req, res)
         })
     }
 }
