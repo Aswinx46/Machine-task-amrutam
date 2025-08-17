@@ -1,0 +1,412 @@
+# Doctor Appointment Scheduler 🩺  
+
+A **Doctor Appointment Scheduler** built with the **MERN stack**, following **Clean Architecture** and **SOLID principles**, designed for scalability and performance.  
+
+## 🚀 Features  
+- 🔒 **JWT Authentication** for secure user access  
+- 📅 **Slot Booking & Slot Blocking** powered by **Redis** (prevents double booking)  
+- 📩 **OTP Generation & Caching** using Redis  
+- 🐳 **Dockerized Setup** with `docker-compose up` for easy deployment  
+- ⚡ **Axios Interceptors** for API request handling  
+- 🔄 **CI/CD Pipeline** with GitHub Actions  
+- 📆 Prepared for **Recurring Slot Scheduling** using `rrule` (future-ready)  
+
+## 🛠 Tech Stack  
+- **Backend:** Node.js, Express.js, MongoDB, Mongoose  
+- **Frontend:** React (if connected)  
+- **Cache & Locking:** Redis  
+- **Containerization:** Docker, Docker Compose  
+- **CI/CD:** GitHub Actions  
+
+## 📦 Getting Started  
+
+### 1. Clone the repository  
+```bash
+git clone https://github.com/Aswinx46/Machine-task-amrutam.git
+cd Machine-task-amrutam
+
+2. Setup environment variables
+
+Create a .env file and add:
+
+MONGO_URI=your_mongo_connection_string
+REDIS_URL=your_redis_url
+JWT_SECRET=your_jwt_secret
+PORT=5000
+
+
+3. Run with Docker
+docker-compose up --build
+
+
+4. Without Docker (local run)
+npm install
+npm run dev
+
+
+5. Project Structure
+
+                       g:/Machine Task Amrutam/
+├── .github/
+│   └── workflows/
+│       └── backendPipeline.yml
+├── Backend/
+│   ├── .DockerIgnore
+│   ├─] .env (ignored)
+│   ├── .gitignore
+│   ├── docker-compose.yaml
+│   ├── Dockerfile
+│   ├── eslint.config.mjs
+│   ├─] node_modules/ (ignored)
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── SCALING.md
+│   ├── src/
+│   │   ├── adapters/
+│   │   │   ├── controllers/
+│   │   │   │   ├── authentication/
+│   │   │   │   │   ├── doctorAuthentication/
+│   │   │   │   │   │   ├── loginDoctorController.ts
+│   │   │   │   │   │   └── signUpDoctorController.ts
+│   │   │   │   │   ├── sendOtpAndRefreshToken/
+│   │   │   │   │   │   ├── refreshTokenController.ts
+│   │   │   │   │   │   ├── sendOtpController.ts
+│   │   │   │   │   │   └── userLogoutController.ts
+│   │   │   │   │   └── userAuthentication/
+│   │   │   │   │       ├── login/
+│   │   │   │   │       │   └── userLoginController.ts
+│   │   │   │   │       └── signup/
+│   │   │   │   │           └── SignupController.ts
+│   │   │   │   ├── doctor/
+│   │   │   │   │   ├── bookings/
+│   │   │   │   │   │   └── findBookingsOfDoctorController.ts
+│   │   │   │   │   └── slot/
+│   │   │   │   │       ├── findSlotsOfADoctorController.ts
+│   │   │   │   │       └── slotCreationController.ts
+│   │   │   │   └── user/
+│   │   │   │       ├── bookings/
+│   │   │   │       │   ├── cancelOrRescheduleBookingByUserController.ts
+│   │   │   │       │   └── findBookingsOfUserController.ts
+│   │   │   │       └── slot/
+│   │   │   │           ├── findSlotDetailsController.ts
+│   │   │   │           ├── findSlotsController.ts
+│   │   │   │           └── slotCreationController.ts
+│   │   │   ├── middlewares/
+│   │   │   │   ├── roleBasedAuthentication/
+│   │   │   │   │   └── roleBasedAuthenticationMiddleware.ts
+│   │   │   │   └── tokenValidation/
+│   │   │   │       ├── tokenBlackListingValidation.ts
+│   │   │   │       └── tokenExpiryValidation.ts
+│   │   │   └── repository/
+│   │   │       ├── availabilityRepository/
+│   │   │       │   └── slorRepository.ts
+│   │   │       ├── bookingRepository/
+│   │   │       │   └── bookingRepository.ts
+│   │   │       ├── doctorRepository/
+│   │   │       │   └── doctorRepository.ts
+│   │   │       └── userRepository/
+│   │   │           └── userRepository.ts
+│   │   ├── app.ts
+│   │   ├── domain/
+│   │   │   ├── entity/
+│   │   │   │   ├── doctor/
+│   │   │   │   │   ├── bookingDTO.ts
+│   │   │   │   │   ├── bookingEntity.ts
+│   │   │   │   │   ├── doctorDTO.ts
+│   │   │   │   │   ├── doctorEntity.ts
+│   │   │   │   │   ├── slotDTO.ts
+│   │   │   │   │   └── slotEntity.ts
+│   │   │   │   └── user/
+│   │   │   │       ├── userDTO.ts
+│   │   │   │       └── userEntity.ts
+│   │   │   └── interface/
+│   │   │       ├── repositoryInterfaces/
+│   │   │       │   ├── bookingRepositoryInterface.ts
+│   │   │       │   ├── doctorRepositoryInterface.ts
+│   │   │       │   ├── slotRepositoryInterface.ts
+│   │   │       │   └── userRepositoryInterface.ts
+│   │   │       ├── serviceInterfaces/
+│   │   │       │   ├── emailServiceInterface.ts
+│   │   │       │   ├── hashPasswordInterface.ts
+│   │   │       │   ├── jwtServiceInterface.ts
+│   │   │       │   ├── otpServiceInterface.ts
+│   │   │       │   ├── redisServiceInterface.ts
+│   │   │       │   └── tokenService.ts
+│   │   │       └── useCaseInterfaces/
+│   │   │           ├── Authentication/
+│   │   │           │   ├── refreshTokenUseCaseInterface.ts
+│   │   │           │   ├── sendOtpUseCaseInterface.ts
+│   │   │           │   └── userLogoutUseCaseInterface.ts
+│   │   │           ├── Client/
+│   │   │           │   ├── bookings/
+│   │   │           │   │   ├── cancelOrRescheduleBookingUseCaseInterface.ts
+│   │   │           │   │   └── findBookingsOfUserUseCaseInterface.ts
+│   │   │           │   ├── slots/
+│   │   │           │   │   ├── bookSlotUseCaseInterface.ts
+│   │   │           │   │   ├── findDetailsOfASlotInterface.ts
+│   │   │           │   │   ├── findSlotsOfADoctorUseCaseInterface.ts
+│   │   │           │   │   └── findSlotsUseCaseInterface.ts
+│   │   │           │   └── userAuthentication/
+│   │   │           │       ├── loginUserUseCaseInterface.ts
+│   │   │           │       └── signupOtpUseCaseInterface.ts
+│   │   │           └── doctor/
+│   │   │               ├── bookings/
+│   │   │               │   └── findBookingsOfDoctorUseCaseInterface.ts
+│   │   │               ├── doctorAuthentication/
+│   │   │               │   ├── doctorLoginUseCaseInterface.ts
+│   │   │               │   └── doctorSignupUseCaseInterface.ts
+│   │   │               └── slotCreations/
+│   │   │                   ├── findSlotsOfADoctorUseCaseInterface.ts
+│   │   │                   └── slotCreationsUseCaseInterface.ts
+│   │   ├── framework/
+│   │   │   ├── constants/
+│   │   │   │   ├── doctorQualification.ts
+│   │   │   │   ├── doctorSpecialization.ts
+│   │   │   │   ├── errorMessages.ts
+│   │   │   │   └── httpStatusCode.ts
+│   │   │   ├── database/
+│   │   │   │   ├── dbConnection/
+│   │   │   │   │   └── dbConnection.ts
+│   │   │   │   ├── models/
+│   │   │   │   │   ├── bookingModel.ts
+│   │   │   │   │   ├── doctorModel.ts
+│   │   │   │   │   ├── slotModel.ts
+│   │   │   │   │   └── userModel.ts
+│   │   │   │   └── schema/
+│   │   │   │       ├── bookingSchema.ts
+│   │   │   │       ├── doctorSchema.ts
+│   │   │   │       ├── slotSchema.ts
+│   │   │   │       └── userSchema.ts
+│   │   │   ├── DI/
+│   │   │   │   ├── doctorDI.ts
+│   │   │   │   ├── middlewareAndRefreshTokenDI.ts
+│   │   │   │   └── userDI.ts
+│   │   │   ├── routes/
+│   │   │   │   ├── auth/
+│   │   │   │   │   └── authRouter.ts
+│   │   │   │   ├── doctor/
+│   │   │   │   │   └── doctorRoute.ts
+│   │   │   │   └── user/
+│   │   │   │       └── userRoute.ts
+│   │   │   ├── services/
+│   │   │   │   ├── emailService.ts
+│   │   │   │   ├── hashPassword.ts
+│   │   │   │   ├── jwtService.ts
+│   │   │   │   ├── otpService.ts
+│   │   │   │   ├── redisService.ts
+│   │   │   │   ├── setTokenInCookie.ts
+│   │   │   │   └── tokenService.ts
+│   │   │   └── validator/
+│   │   │       ├── doctor/
+│   │   │       │   ├── signupDoctorValidator.ts
+│   │   │       │   └── slotCreationValidator.ts
+│   │   │       └── user/
+│   │   │           ├── bookingValidator.ts
+│   │   │           ├── loginValidator.ts
+│   │   │           └── signupValidator.ts
+│   │   ├── templates/
+│   │   │   └── otpTemplate.ts
+│   │   └── useCases/
+│   │       ├── Authentication/
+│   │       │   ├── refreshTokenUseCase.ts
+│   │       │   ├── sendOtpUseCase.ts
+│   │       │   └── userLogoutUseCase.ts
+│   │       ├── doctors/
+│   │       │   ├── bookings/
+│   │       │   │   └── findBookingsForDoctorUseCase.ts
+│   │       │   ├── doctorAuthentication/
+│   │       │   │   ├── loginDoctorUseCase.ts
+│   │       │   │   └── signupUseCase.ts
+│   │       │   └── slot/
+│   │       │       ├── findSlotsOfADoctorUseCase.ts
+│   │       │       └── slotCreationUseCase.ts
+│   │       ├── mappers/
+│   │       │   ├── bookings/
+│   │       │   │   └── bookingMapper.ts
+│   │       │   ├── doctor/
+│   │       │   │   ├── doctorMapper.ts
+│   │       │   │   └── slotMapper.ts
+│   │       │   └── user/
+│   │       │       ├── slotMapper.ts
+│   │       │       └── userMapper.ts
+│   │       └── users/
+│   │           ├── bookings/
+│   │           │   ├── cancelOrRescheduleBookingUseCase.ts
+│   │           │   └── findBookingsOfUserUseCase.ts
+│   │           ├── slotOperations/
+│   │           │   ├── bookSlotUseCase.ts
+│   │           │   ├── findDetailsOfASlot.ts
+│   │           │   ├── findSlotsOfADoctorUseCase.ts
+│   │           │   └── findSlotsUseCase.ts
+│   │           └── userAuthentication/
+│   │               ├── signupUserUseCase.ts
+│   │               └── userLoginUseCase.ts
+│   └── tsconfig.json
+└── Frontend/
+    ├─] .env (ignored)
+    ├── .gitignore
+    ├── components.json
+    ├── eslint.config.js
+    ├── index.html
+    ├─] node_modules/ (ignored)
+    ├── package-lock.json
+    ├── package.json
+    ├── public/
+    │   └── vite.svg
+    ├── README.md
+    ├── src/
+    │   ├── App.css
+    │   ├── App.tsx
+    │   ├── assets/
+    │   │   └── react.svg
+    │   ├── axios/
+    │   │   ├── authAxios.ts
+    │   │   ├── doctorAxiosInstance.ts
+    │   │   └── userAxiosInstance.ts
+    │   ├── components/
+    │   │   ├── LoadingSpinner.tsx
+    │   │   ├── OtpModal.tsx
+    │   │   ├── Pagination.tsx
+    │   │   ├── protectedRoute/
+    │   │   │   ├── ProtectedRouteDoctor.tsx
+    │   │   │   └── ProtectedRouteUser.tsx
+    │   │   ├── slots/
+    │   │   │   ├── SlotCard.tsx
+    │   │   │   └── SlotManager.tsx
+    │   │   └── ui/
+    │   │       ├── alert.tsx
+    │   │       ├── badge.tsx
+    │   │       ├── button.tsx
+    │   │       ├── calendar.tsx
+    │   │       ├── card.tsx
+    │   │       ├── checkbox.tsx
+    │   │       ├── dialog.tsx
+    │   │       ├── input.tsx
+    │   │       ├── label.tsx
+    │   │       ├── popover.tsx
+    │   │       ├── select.tsx
+    │   │       ├── slider.tsx
+    │   │       ├── sonner.tsx
+    │   │       ├── tabs.tsx
+    │   │       └── textarea.tsx
+    │   ├── errorBoundary/
+    │   │   └── ErrorBoundary.tsx
+    │   ├── features/
+    │   │   ├── doctor/
+    │   │   │   ├── auth/
+    │   │   │   │   ├── component/
+    │   │   │   │   │   └── forms/
+    │   │   │   │   │       ├── FormProgress.tsx
+    │   │   │   │   │       ├── LoginForm.tsx
+    │   │   │   │   │       ├── SignupFormDoctor.tsx
+    │   │   │   │   │       └── steps/
+    │   │   │   │   │           ├── DocumentReviewStep.tsx
+    │   │   │   │   │           ├── PersonalInfoStep.tsx
+    │   │   │   │   │           ├── PracticeInfoStep.tsx
+    │   │   │   │   │           └── ProfessionalDetailsStep.tsx
+    │   │   │   │   ├── hooks/
+    │   │   │   │   │   └── doctorAuthenticationHooks.ts
+    │   │   │   │   ├── interfaces/
+    │   │   │   │   │   └── DoctorSignupEntity.ts
+    │   │   │   │   ├── pages/
+    │   │   │   │   │   ├── DoctorLogin.tsx
+    │   │   │   │   │   └── DoctorSignup.tsx
+    │   │   │   │   └── services/
+    │   │   │   │       └── doctorAuthenticationService.ts
+    │   │   │   └── slot/
+    │   │   │       ├── component/
+    │   │   │       │   ├── BookingCard.tsx
+    │   │   │       │   ├── BookingFilters.tsx
+    │   │   │       │   ├── CreateSlotModal.tsx
+    │   │   │       │   ├── DoctorHeader.tsx
+    │   │   │       │   ├── EditSlotModal.tsx
+    │   │   │       │   └── TimePicker.tsx
+    │   │   │       ├── hooks/
+    │   │   │       │   └── slotHook.ts
+    │   │   │       ├── interfaces/
+    │   │   │       ├── pages/
+    │   │   │       │   ├── DoctorHome.tsx
+    │   │   │       │   └── SlotListing.tsx
+    │   │   │       ├── services/
+    │   │   │       │   └── slotService.ts
+    │   │   │       └── utils/
+    │   │   │           └── checkDateConflict.ts
+    │   │   └── user/
+    │   │       ├── auth/
+    │   │       │   ├── component/
+    │   │       │   │   ├── LoginForm.tsx
+    │   │       │   │   └── SignupForm.tsx
+    │   │       │   ├── hooks/
+    │   │       │   │   └── userAuthenticationHooks.tsx
+    │   │       │   ├── interfaces/
+    │   │       │   │   ├── loginFormAndPageInterfaces.ts
+    │   │       │   │   ├── OtpModalInterface.ts
+    │   │       │   │   └── signupFormInterfaces.ts
+    │   │       │   ├── pages/
+    │   │       │   │   ├── LoginPage.tsx
+    │   │       │   │   └── SignupPage.tsx
+    │   │       │   └── services/
+    │   │       │       └── authenticationService.ts
+    │   │       ├── bookingPage/
+    │   │       │   ├── components/
+    │   │       │   │   └── BookingDetailsCard.tsx
+    │   │       │   ├── hooks/
+    │   │       │   │   └── bookingHooks.ts
+    │   │       │   ├── Pages/
+    │   │       │   │   ├── BookingDetailsPage.tsx
+    │   │       │   │   └── UserBookingDetails.tsx
+    │   │       │   └── services/
+    │   │       │       └── bookingService.ts
+    │   │       └── home/
+    │   │           ├── hooks/
+    │   │           │   ├── debounceHook.ts
+    │   │           │   └── userHomeHooks.ts
+    │   │           ├── pages/
+    │   │           │   └── UserHome.tsx
+    │   │           └── services/
+    │   │               └── userHomeServices.ts
+    │   ├── index.css
+    │   ├── lib/
+    │   │   └── utils.ts
+    │   ├── main.tsx
+    │   ├── reduxstrore/
+    │   │   ├── slices/
+    │   │   │   ├── doctorSlice.ts
+    │   │   │   ├── tokenSlice.ts
+    │   │   │   └── userSlice.ts
+    │   │   └── store.ts
+    │   ├── routes/
+    │   │   ├── doctor/
+    │   │   │   └── DoctorRoute.tsx
+    │   │   └── user/
+    │   │       └── UserRoute.tsx
+    │   ├── types/
+    │   │   ├── appointment/
+    │   │   │   └── appointment.ts
+    │   │   ├── booking/
+    │   │   │   └── bookingSlotDetailsType.ts
+    │   │   ├── Doctor/
+    │   │   │   └── DoctorType.ts
+    │   │   ├── slots/
+    │   │   │   └── slotsType.ts
+    │   │   └── user/
+    │   │       └── userType.ts
+    │   └── vite-env.d.ts
+    ├── tsconfig.app.json
+    ├── tsconfig.json
+    ├── tsconfig.node.json
+    └── vite.config.ts
+
+  📈 Scalability Notes
+
+Uses Redis locks to avoid race conditions in slot booking
+
+Prepared for recurring rules with rrule integration (future feature)
+
+Dockerized for horizontal scaling and easier deployment
+
+CI/CD pipeline ensures smooth updates
+
+
+
+                       
